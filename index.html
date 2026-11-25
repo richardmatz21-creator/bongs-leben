@@ -114,7 +114,7 @@
   .mpn{position:fixed;z-index:4;transform:translate(-50%,-100%);background:rgba(16,22,34,.8);color:#22e3ff;font-size:12px;font-weight:800;padding:2px 7px;border-radius:8px;pointer-events:none;white-space:nowrap;max-width:240px;overflow:hidden;text-overflow:ellipsis}
   .mpn.say{background:#fff;color:#1b2330}
   #mpChat{position:fixed;left:8px;bottom:8px;z-index:5;max-width:62vw;background:rgba(16,22,34,.8);border-radius:10px;padding:6px 9px;font-size:12px;font-weight:600;line-height:1.35;pointer-events:none;display:none}
-  #menuBtn,#chatBtn{pointer-events:auto;width:44px;height:44px;border-radius:12px;border:0;
+  #menuBtn,#chatBtn,#smkBtn{pointer-events:auto;width:44px;height:44px;border-radius:12px;border:0;
     background:rgba(16,22,34,.85);color:#fff;font-size:22px}
   #act{position:fixed;right:18px;bottom:28px;z-index:6;min-width:92px;height:92px;border-radius:46px;border:3px solid #fff;
     background:#f2b632;color:#1b2330;font-size:15px;font-weight:800;padding:0 12px;display:none}
@@ -163,6 +163,49 @@
   #mapF{font-size:12px;font-weight:600;opacity:.85;text-align:center;padding:0 10px}
   #bubble{position:fixed;z-index:5;transform:translate(-50%,-100%);background:#fff;color:#1b2330;font-size:12px;font-weight:700;padding:4px 9px;border-radius:10px;max-width:210px;text-align:center;pointer-events:none;display:none;box-shadow:0 2px 6px rgba(0,0,0,.35)}
   #actName{position:fixed;right:14px;bottom:128px;z-index:6;background:rgba(16,22,34,.85);padding:4px 10px;border-radius:10px;font-size:12px;font-weight:700;display:none;pointer-events:none;max-width:60vw;text-align:right}
+  #cas.cas-rubbel,#cas.cas-lotto{background:radial-gradient(ellipse at center,#1c2433,#07080c)}
+  .rubWrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .rubTicket{width:min(92vw,380px);border-radius:14px;padding:14px 14px 10px;position:relative;user-select:none;-webkit-user-select:none;box-shadow:0 18px 50px rgba(0,0,0,.6),inset 0 0 0 3px rgba(255,255,255,.28)}
+  .rub-keks{background:linear-gradient(160deg,#ffd75e,#ff9f2e 60%,#f0612b);color:#3a1c00}
+  .rub-gold{background:radial-gradient(circle at 30% 0%,#4a3b12,#111 72%);color:#ffd96a;box-shadow:0 18px 50px rgba(0,0,0,.6),inset 0 0 0 3px #c9a23a}
+  .rubHead{display:flex;align-items:center;gap:8px}
+  .rubHead b{font-size:26px;font-weight:900;letter-spacing:2px;flex:1;text-shadow:0 2px 0 rgba(0,0,0,.18)}
+  .rub-gold .rubHead b{background:linear-gradient(#fff3b0,#e0b23a 55%,#9c7417);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+  .rubIc{font-size:30px}
+  .rubPr{white-space:nowrap;font-weight:900;background:rgba(0,0,0,.22);padding:3px 8px;border-radius:8px}
+  .rubSub{font-size:12px;font-weight:700;margin:4px 0 10px;opacity:.85}
+  .rubPlay{position:relative;border-radius:10px;padding:8px;background:rgba(255,255,255,.5)}
+  .rub-gold .rubPlay{background:rgba(255,217,106,.07);outline:1px dashed #8a6d22}
+  .rubGrid{display:grid;gap:8px}
+  .rubCell{background:#fff8e6;border-radius:8px;height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#3a1c00;transition:transform .2s}
+  .rubCell span{font-size:18px;line-height:1.1}
+  .rubCell b{font-size:17px;font-weight:900;white-space:nowrap}
+  .rub-gold .rubCell{background:#1d1a10;color:#ffd96a;border:1px solid #6b5520}
+  .rubCell.hit{animation:rubHit .45s ease-in-out 6 alternate;background:#7dff9c!important;color:#063!important}
+  @keyframes rubHit{to{transform:scale(1.08)}}
+  #rubC{position:absolute;inset:0;width:100%;height:100%;border-radius:10px;touch-action:none;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34'%3E%3Ccircle cx='17' cy='17' r='13' fill='%23d9a400' stroke='%23805e00' stroke-width='3'/%3E%3Ccircle cx='17' cy='17' r='7' fill='none' stroke='%23fff3b0' stroke-width='2'/%3E%3C/svg%3E") 17 17,pointer}
+  .rubFoot{font-size:10px;margin-top:8px;opacity:.7;text-align:center}
+  .ltWrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  .ltSlip{background:#fffdf6;color:#c8102e;border-radius:10px;padding:12px;width:min(92vw,360px);border:3px solid #ffd400;box-shadow:0 18px 50px rgba(0,0,0,.6)}
+  .ltHead{display:flex;align-items:baseline;gap:8px;background:#ffd400;margin:-12px -12px 10px;padding:8px 12px;border-radius:6px 6px 0 0;color:#c8102e;flex-wrap:wrap}
+  .ltHead b{font-size:26px;font-weight:900;font-style:italic;letter-spacing:1px}
+  .ltHead span{font-weight:900}
+  .ltHead i{margin-left:auto;font-size:11px;color:#333;font-style:normal;font-weight:700}
+  .ltGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .ltN{aspect-ratio:1;border:1.5px solid #e88a95;background:#fff;color:#c8102e;font:inherit;font-weight:800;font-size:14px;border-radius:3px;cursor:pointer;position:relative;padding:0}
+  .ltN:hover{background:#fff0f2}
+  .ltN.on{color:#c9a0a6}
+  .ltN.on::after{content:'✕';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;color:#1a3fa8;font-weight:400;transform:rotate(-7deg)}
+  .ltBar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+  .ltBar .gfB:disabled{opacity:.45;cursor:default}
+  .ltSide{display:flex;flex-direction:column;gap:10px;width:min(92vw,270px)}
+  .ltBox{background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.6}
+  .ltBox>b{display:block;color:#ffd400;margin-bottom:4px}
+  .ltJack{color:#ffd400}
+  .ltTip{font-weight:800;letter-spacing:1px}
+  .ltBalls{display:flex;gap:6px;flex-wrap:wrap}
+  .ltBall{width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#ffe15a 40%,#d9a400);color:#222;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.5)}
+  @media (max-width:520px){ .rubCell{height:54px} .rubCell b{font-size:14px} .ltN{font-size:12px} .ltHead b{font-size:21px} }
 </style>
 </head>
 <body>
@@ -181,7 +224,7 @@
   <div class="pill" id="hX" style="display:none"><span id="hStars"></span><span id="hPro"></span><span id="hCar"></span></div>
   <div class="pill" id="hMp" style="display:none"></div>
   <div class="pill" id="hGoal" style="display:none"><span id="hArrow">⬆</span><span id="hGoalT"></span></div>
-  <div style="display:flex;gap:6px"><button id="menuBtn" aria-label="Menü">📋</button><button id="chatBtn" aria-label="Mitspieler und Chat">💬</button></div>
+  <div style="display:flex;gap:6px"><button id="menuBtn" aria-label="Menü">📋</button><button id="chatBtn" aria-label="Mitspieler und Chat">💬</button><button id="smkBtn" aria-label="Rauchen" style="display:none">🚬</button></div>
 </div>
 <button id="carBtn"></button>
 <button id="act"></button>
@@ -194,7 +237,7 @@
   <h1>Bongs Leben</h1>
   <p id="tP"></p>
   <div class="opts" id="tO"></div>
-  <p style="font-size:12px;opacity:.7;margin:12px 0 0">PC: WASD laufen, rechte Maustaste halten + ziehen = Kamera drehen, Mausrad = Zoom, Shift = rennen, E = Aktion, F = ein-/aussteigen, H = hupen, M = Karte, N = Notizbuch, T = Chat. Handy: links ziehen = laufen, rechts ziehen = Kamera drehen, kleine Karte antippen = große Karte.</p>
+  <p style="font-size:12px;opacity:.7;margin:12px 0 0">PC: WASD laufen, rechte Maustaste halten + ziehen = Kamera drehen, Mausrad = Zoom, Shift = rennen, E = Aktion, F = ein-/aussteigen, H = hupen, M = Karte, N = Notizbuch, T = Chat, R = rauchen. Handy: links ziehen = laufen, rechts ziehen = Kamera drehen, kleine Karte antippen = große Karte.</p>
 </div></div>
 
 <script>
@@ -209,7 +252,7 @@ const cv=$('c');
 function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);
   t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const clamp=(v,a,b)=>v<a?a:v>b?b:v;
-const fmt=c=>(c/100).toFixed(2).replace('.',',')+' €';
+const fmt=c=>(c/100).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 
@@ -315,6 +358,7 @@ const POIS=[
   {id:'atm2',icon:'🏧',name:'Geldautomat',...atmSpot(2)},
   {id:'atm3',icon:'🏧',name:'Geldautomat',...atmSpot(3)},
   {id:'dosen',icon:'🎨',name:'Dosen-Dieter (Graffiti-Laden)',door:1,...topOf(0,1)},
+  {id:'tabak',icon:'🚬',name:'Tabak & Lotto „Blauer Dunst“',door:1,...topOf(8,2)},
   {id:'hall',icon:'🧱',name:'Hall of Fame',x:67,y:53.9},
   {id:'tcar0',icon:'🚆',name:'S-Bahn Wagen 1',x:112.6,y:89.35,hidden:()=>trainOff()!==0},
   {id:'tcar1',icon:'🚆',name:'S-Bahn Wagen 2',x:115.55,y:89.35,hidden:()=>trainOff()!==0},
@@ -456,6 +500,7 @@ addEventListener('keydown',e=>{ if(casIsOpen()){ if(e.key==='Escape') casClose()
   if(k==='e'||k===' '||k==='enter'){ e.preventDefault(); doAction(true); }
   if(k==='f') doCar();
   if(k==='h') honk();
+  if(k==='r') smokeMenu();
   if(k==='t'){ e.preventDefault(); chatDialog(); return; }
   if(k==='m') openMap();
   if(k==='n'||k==='tab'){ e.preventDefault(); openMenu(); } });
@@ -841,7 +886,7 @@ function openMenu(){
   L.push((S.won?'✅':'🎯')+' Hauptziel: Eigenes Zimmer im WG-Büro (Plattenhausen) – 250,00 €');
   L.push('🗺️ Stadtteile entdeckt: '+Object.keys(S.visited).length+' / 6');
   if(S.bank>0) L.push('🏦 Konto bei der Pfandbank: '+fmt(S.bank)+' (1 % Zinsen pro Tag)');
-  { const fg=featGoal(); if(fg) L.push('📌 '+fg); const gl=gmLine(); if(gl) L.push(gl); L.push('📋 Aufträge erledigt: '+(S.st.gm||0)); }
+  { const fg=featGoal(); if(fg) L.push('📌 '+fg); const gl=gmLine(); if(gl) L.push(gl); L.push('📋 Aufträge erledigt: '+(S.st.gm||0)); if((S.sucht||0)>=1) L.push('🚬 Sucht: '+Math.round(S.sucht)+' %'+(schmacht()?' – Schmacht!':'')); }
   if(S.wanted>0) L.push('⭐ Fahndung '+starStr()+' – abhängen, bei Manni umlackieren oder auf der Wache stellen');
   L.push('🌤️ Wetter: heute '+(snowing()?'Schnee ❄️':'Sonne ☀️')+', morgen '+(snowOn(S.day+1)?'Schnee ❄️':'Sonne ☀️'));
   if(S.mehlT>0) L.push('⚡ Mehl-Rausch: noch '+Math.ceil(S.mehlT/2)+' Sekunden'); else if(S.downT>0) L.push('😵 Mehlkater: langsamer, alles grau');
@@ -863,7 +908,7 @@ function openMenu(){
   if(drv) o.push({label:'🚗 Im Auto schlafen',fn:()=>sleep('Im Auto',80,.05,false)});
   if(snowing()&&!drv&&!S.inB) o.push({label:'❄️ In den Schnee legen und schlafen',fn:snowSleep});
   if(S.mehl>0) o.push({label:'👃 Linie Mehl ziehen ('+S.mehl+' Tütchen im Beutel)',fn:mehlLine});
-  o.push({label:'🗺️ Wo ist was? · Hilfe',fn:()=>info('🗺️ Wo ist was?','Wo ist was?\n• Bahnhofsviertel: Billig-Kauf 🛒, Tafel 🍲 (10–16 Uhr), Notunterkunft 🛏️ (ab 18 Uhr), Polizeiwache 🚓\n• Altstadt: Flyer-Franz 📰, Alis Döner 🥙, Campingladen ⛺, Krankenhaus 🏥\n• Villenviertel: Oma Erna 👵, Chantal 🤳, Sportwagen\n• Hafen: Hinnerk 📦, Schrott-Manni 🔧, Brücke 🌉, Techno-Bunker 🔊 (ganz unten links, unter dem Lagerhaus)\n• Stadtpark: Tauben-Kalle 🕊️, Parkbänke 🪑\n• Plattenhausen: Alu-Rudi 🛸, Billig-Kauf 🛒, WG-Büro 🏠\n\n🚗 Autos: Mit dem blauen Knopf (PC: F) in geparkte oder fahrende Autos steigen. Klauen, Leute umfahren und Polizei rammen gibt Sterne. Schrott-Manni im Hafen kauft Autos (3 pro Tag).\n\n🕹️ Steuerung: WASD laufen, immer aus Sicht der Kamera. Kamera drehen: rechte Maustaste halten und ziehen, Mausrad = Zoom. Handy: links ziehen = laufen, rechts ziehen = Kamera. Shift = rennen (kostet Energie). Im Auto: W = Gas, S = Bremse und rückwärts, A/D = lenken, H = hupen; beim Fahren folgt die Kamera dem Auto. M = Stadtplan, N = Notizbuch, T = Chat.\n\n🚇 Die Tunnel am Stadtrand führen ans andere Ende der Stadt. 🗑️ In Mülleimern liegt einmal am Tag Pfand. ❗ Leute mit Ausrufezeichen haben Aufträge – ist einer erledigt, taucht woanders der nächste auf.\n\n👥 Mehrspieler (Taste T oder 💬): Einer erstellt eine Lobby und gibt den Code weiter, die anderen treten damit bei. Alle in der Lobby haben dieselbe Uhrzeit; Geld, Aufträge, Polizei und Pfand hat jeder für sich.\n\n❄️ Schnee kommt an manchen Tagen (siehe Wetter): Zu Fuß kühlst du schneller aus, Autos rutschen. 🍺 Alkohol: macht Schlangenlinien – und wärmt nicht.',openMenu)});
+  o.push({label:'🗺️ Wo ist was? · Hilfe',fn:()=>info('🗺️ Wo ist was?','Wo ist was?\n• Bahnhofsviertel: Billig-Kauf 🛒, Tafel 🍲 (10–16 Uhr), Notunterkunft 🛏️ (ab 18 Uhr), Polizeiwache 🚓\n• Altstadt: Flyer-Franz 📰, Alis Döner 🥙, Campingladen ⛺, Krankenhaus 🏥\n• Villenviertel: Oma Erna 👵, Chantal 🤳, Sportwagen\n• Hafen: Hinnerk 📦, Schrott-Manni 🔧, Brücke 🌉, Techno-Bunker 🔊 (ganz unten links, unter dem Lagerhaus)\n• Stadtpark: Tauben-Kalle 🕊️, Parkbänke 🪑\n• Plattenhausen: Alu-Rudi 🛸, Billig-Kauf 🛒, WG-Büro 🏠\n\n🚗 Autos: Mit dem blauen Knopf (PC: F) in geparkte oder fahrende Autos steigen. Klauen, Leute umfahren und Polizei rammen gibt Sterne. Schrott-Manni im Hafen kauft Autos (3 pro Tag).\n\n🕹️ Steuerung: WASD laufen, immer aus Sicht der Kamera. Kamera drehen: rechte Maustaste halten und ziehen, Mausrad = Zoom. Handy: links ziehen = laufen, rechts ziehen = Kamera. Shift = rennen (kostet Energie). Im Auto: W = Gas, S = Bremse und rückwärts, A/D = lenken, H = hupen; beim Fahren folgt die Kamera dem Auto. M = Stadtplan, N = Notizbuch, T = Chat, R = rauchen.\n\n🚇 Die Tunnel am Stadtrand führen ans andere Ende der Stadt. 🗑️ In Mülleimern liegt einmal am Tag Pfand. ❗ Leute mit Ausrufezeichen haben Aufträge – ist einer erledigt, taucht woanders der nächste auf.\n\n👥 Mehrspieler (Taste T oder 💬): Einer erstellt eine Lobby und gibt den Code weiter, die anderen treten damit bei. Alle in der Lobby haben dieselbe Uhrzeit; Geld, Aufträge, Polizei und Pfand hat jeder für sich.\n\n❄️ Schnee kommt an manchen Tagen (siehe Wetter): Zu Fuß kühlst du schneller aus, Autos rutschen. 🍺 Alkohol: macht Schlangenlinien – und wärmt nicht.',openMenu)});
   if(S.gm.act) o.push({label:'❌ Aktuellen Auftrag abbrechen',fn:gmAbort});
   o.push({label:'👥 Mehrspieler: Lobby & Chat (Taste T)',fn:()=>chatDialog()});
   o.push({label:'🎓 Tutorial nochmal ansehen',fn:()=>{ S.tut=0; tutS=null; }});
@@ -901,7 +946,7 @@ function update(dt){
   const gm=dt*2; S.min+=gm; if(S.min>=1440){ S.min-=1440; S.day++; }
   const rush=S.mehlT>0;
   if(!rush) S.hunger=Math.max(0,S.hunger-gm*100/960);
-  if(!rush) S.energy=Math.max(0,S.energy-gm*(100/1200)*(S.hunger<=0?3:1)*((SN&&!drv&&!S.inB)?1.35:1));
+  if(!rush) S.energy=Math.max(0,S.energy-gm*(100/1200)*(S.hunger<=0?3:1)*((SN&&!drv&&!S.inB)?1.35:1)*nicDrain());
   S.pro=Math.max(0,S.pro-gm*.15/60); rushTick(gm); bunkerTick(dt); extraTick(dt); if(dlgOpen) return;
   if(S.energy<=0){ collapse(); return; }
   // Stadtteil
@@ -1025,7 +1070,7 @@ Geo.prototype.mesh=function(m,M,col,e){ const P_=m.p, N=m.n, I=m.i, nv=P_.length
 function SGeo(){ this.f=new Float32Array(1024*9); this.ix=new Uint32Array(1024*6); this.nv=0; this.ni=0; }
 SGeo.prototype.reset=function(){ this.nv=0; this.ni=0; };
 SGeo.prototype.q=function(p,cell,r,g,b,a){ if((this.nv+4)*9>this.f.length){ const n=new Float32Array(this.f.length*2); n.set(this.f); this.f=n; const m=new Uint32Array(this.ix.length*2); m.set(this.ix); this.ix=m; }
-  const u0=(cell%8)/8+.002, v0=Math.floor(cell/8)/8+.002, u1=u0+.121, v1=v0+.121, uv=[u0,v1,u1,v1,u1,v0,u0,v0], f=this.f, i=this.nv;
+  const u0=(cell%16)/16+.001, v0=Math.floor(cell/16)/16+.001, u1=u0+.0605, v1=v0+.0605, uv=[u0,v1,u1,v1,u1,v0,u0,v0], f=this.f, i=this.nv;
   for(let k=0;k<4;k++){ const o=(i+k)*9; f[o]=p[k*3];f[o+1]=p[k*3+1];f[o+2]=p[k*3+2];f[o+3]=uv[k*2];f[o+4]=uv[k*2+1];f[o+5]=r*a;f[o+6]=g*a;f[o+7]=b*a;f[o+8]=a; }
   const ix=this.ix, n=this.ni; ix[n]=i;ix[n+1]=i+1;ix[n+2]=i+2;ix[n+3]=i;ix[n+4]=i+2;ix[n+5]=i+3; this.nv+=4; this.ni+=6; };
 let camRX=0, camRZ=1;
@@ -1093,10 +1138,10 @@ function makeTextures(){ const T_={}, r=mulberry(4711); let c,g;
       if(r()<.42){ ge.fillStyle=['#ffd98a','#ffe9b8','#ffc76a','#cfe2ff'][Math.floor(r()*4)]; ge.globalAlpha=.55+r()*.45; ge.fillRect(wx,wy,32,38); ge.globalAlpha=1; } } }
   T_.wall=texOf(c,true); T_.wallE=texOf(e,true);
   // Sprite-Atlas
-  c=cnv(512,512); g=c.getContext('2d'); let gr=g.createRadialGradient(32,32,0,32,32,31); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(.45,'rgba(255,255,255,.45)'); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,64,64);
+  c=cnv(1024,1024); g=c.getContext('2d'); let gr=g.createRadialGradient(32,32,0,32,32,31); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(.45,'rgba(255,255,255,.45)'); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,64,64);
   const im=g.createImageData(64,64); for(let y=0;y<64;y++)for(let x=0;x<64;x++){ const q=Math.max(0,1-Math.abs(x-31.5)/31.5), al=Math.pow(q,1.5)*(y/63), o=(y*64+x)*4; im.data[o]=255; im.data[o+1]=255; im.data[o+2]=255; im.data[o+3]=Math.round(255*al); } g.putImageData(im,64,0);
   gr=g.createRadialGradient(160,32,0,160,32,31); gr.addColorStop(0,'rgba(90,90,90,.85)'); gr.addColorStop(1,'rgba(90,90,90,0)'); g.fillStyle=gr; g.fillRect(128,0,64,64);
-  const icon=(k,ch)=>{ const x=(k%8)*64+32, y=Math.floor(k/8)*64+32; g.fillStyle='#fff'; g.beginPath(); g.arc(x,y,29,0,7); g.fill(); g.strokeStyle='#1b2330'; g.lineWidth=3; g.stroke(); g.font='34px sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillStyle='#000'; g.fillText(ch,x,y+2); };
+  const icon=(k,ch)=>{ const x=(k%16)*64+32, y=Math.floor(k/16)*64+32; g.fillStyle='#fff'; g.beginPath(); g.arc(x,y,29,0,7); g.fill(); g.strokeStyle='#1b2330'; g.lineWidth=3; g.stroke(); g.font='34px sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillStyle='#000'; g.fillText(ch,x,y+2); };
   icon(3,'📮'); POIS.forEach((p,k)=>{ p.cell=8+k; icon(8+k,p.icon); });
   T_.atlas=texOf(c,false,true);
   return T_; }
@@ -1433,7 +1478,7 @@ function render(time){ if(!glOK||!S) return;
   if(S.q.erna>0&&near(dog.x,dog.y,40)){ const da=S.q.erna===2?Math.atan2(S.y-dog.y,S.x-dog.x):.6; dog3(D,dog.x,groundY(dog.x,dog.y),dog.y,da,time); }
   const j=S.job; if(j&&j.type==='flyer') for(const p of j.pts) if(!p.ok&&near(p.x,p.y,60)){ D.box(p.x-.13,CURB,p.y-.1,p.x+.13,CURB+.42,p.y+.1,hx('#f2c21a'),.2); A.bill(p.x,.75+Math.sin(t*3)*.05,p.y,.22,.44,3,1,1,1,1); B.bill(p.x,0,p.y,.35,9,1,1,.85,.25,.5); }
   if(!drv&&camDist>.6) guy3(D,px,pY,pz,heading,(j&&j.type==='kiste'&&j.carry)?Object.assign({box:1},myLook()):(danceT>0&&S.inB)?Object.assign({dn:beatNow()*Math.PI},myLook()):myLook(),walkT,false);
-  if(inBunker()) clubDyn(D,B,t); else if(inCasino()) casinoDyn(D,B,t); extraDyn(D,A,B,t,near,E,VP); featDyn(D,A,B,t);
+  if(inBunker()) clubDyn(D,B,t); else if(inCasino()) casinoDyn(D,B,t); extraDyn(D,A,B,t,near,E,VP); featDyn(D,A,B,t); tabakDyn(A,B,t);
   const tg=S.inB?null:questTarget(); if(tg){ const pulse=.45+Math.sin(t*4)*.15; B.bill(tg.x,0,tg.y,.45,14,1,1,.82,.2,pulse); B.flat(tg.x,groundY(tg.x,tg.y)+.03,tg.y,.8,0,1,.82,.2,pulse); }
   if(E.night>.02&&!S.inB){ const n=E.night; for(const L of LAMPS) if(near(L[0],L[1],46)) B.flat(L[0],groundY(L[0],L[1])+.02,L[1],1.7,0,1,.82,.5,.5*n);
     const hl=(x,z,a)=>{ B.flat(x+Math.cos(a)*1.3,groundY(x,z)+.025,z+Math.sin(a)*1.3,1.2,0,1,.95,.75,.45*n); };
@@ -1983,7 +2028,7 @@ function mpPeers(list){ const seen=new Set(), now=Date.now(); let mx=0;
     const x=num(pos[0],-8,W+8), y=num(pos[1],-8,H+8), h=num(pos[2],-7,7); if(x===null||y===null||h===null) continue; seen.add(pr.peer);
     const nick=typeof q.n==='string'?(q.n.replace(/[\u0000-\u001f]/g,'').slice(0,16)||'Jemand'):'Jemand';
     let o=MP.peers.get(pr.peer); if(!o){ o={x,y,h,w:0,mt:0,ms:''}; MP.peers.set(pr.peer,o); if(running) toast('👋 '+nick+' ist in der Stadt'); }
-    o.tx=x; o.ty=y; o.th=h; o.in=!!q.b; o.rm=q.r==='c'?'c':''; o.dn=!!q.d; o.k=(num(q.k,0,7)||0)|0; o.nick=nick; o.big=!!q.g;
+    o.tx=x; o.ty=y; o.th=h; o.in=!!q.b; o.rm=q.r==='c'?'c':''; o.dn=!!q.d; o.sm=Math.max(0,Math.min(4,(q.sm|0))); o.k=(num(q.k,0,7)||0)|0; o.nick=nick; o.big=!!q.g;
     const c=Array.isArray(q.c)?q.c:null; o.car=c&&num(c[0],0,4)!==null&&num(c[1],-7,7)!==null?{t:num(c[0],0,4)|0,a:num(c[1],-7,7),col:typeof c[2]==='string'&&/^#[0-9a-fA-F]{6}$/.test(c[2])?c[2]:'#888888'}:null;
     mvPeer(q,pr.peer);
     const tm=typeof q.tm==='number'&&isFinite(q.tm)&&q.tm>=1440&&q.tm<1440*10000?Math.floor(q.tm):0; if(tm>mx) mx=tm;
@@ -1991,7 +2036,7 @@ function mpPeers(list){ const seen=new Set(), now=Date.now(); let mx=0;
   for(const k of Array.from(MP.peers.keys())) if(!seen.has(k)){ const o=MP.peers.get(k); MP.peers.delete(k); if(running&&o) toast('👋 '+o.nick+' ist weg'); }
   // gemeinsame Uhr: alle richten sich nach dem, der am weitesten ist
   if(S){ const mine=S.day*1440+S.min; if(mx>mine){ S.day=Math.max(1,Math.floor(mx/1440)); S.min=mx%1440; if(mx-mine>45&&running) toast('🕒 Lobby-Uhr: Tag '+S.day+', '+clock()+' Uhr'); } } }
-function mpMine(){ return {mv:[S.mv===undefined?70:S.mv,S.mvN||0],p:[+S.x.toFixed(2),+S.y.toFixed(2),+heading.toFixed(2)],c:drv?[drv.type,+drv.a.toFixed(2),drv.col]:null,b:S.inB?1:0,r:S.inB&&S.room==='casino'?'c':'',d:danceT>0?1:0,k:S.skin||0,n:mpNick(),g:S.big?1:0,m:MP.msg,tm:S.day*1440+Math.floor(S.min)}; }
+function mpMine(){ return {mv:[S.mv===undefined?70:S.mv,S.mvN||0],p:[+S.x.toFixed(2),+S.y.toFixed(2),+heading.toFixed(2)],c:drv?[drv.type,+drv.a.toFixed(2),drv.col]:null,b:S.inB?1:0,r:S.inB&&S.room==='casino'?'c':'',d:danceT>0?1:0,sm:smokeCode(),k:S.skin||0,n:mpNick(),g:S.big?1:0,m:MP.msg,tm:S.day*1440+Math.floor(S.min)}; }
 function mpTick(t){ if(NET.state!=='on'||!running||!S) return; if(t-MP.sendT<(NET.kind==='mq'?140:95)) return; MP.sendT=t; if(MP.msg&&Date.now()-MP.msg[1]>9000) MP.msg=null; const me=mpMine();
   try{ if(NET.kind==='room'){ const q=NET.lobby.presence(me); if(q&&q.catch) q.catch(()=>{}); }
     else if(NET.kind==='mq'){ const now=Date.now(), msg=JSON.stringify({i:NET.mqId,p:me}); let ok=0; (NET.mqCl||[]).forEach(c=>{ if(c.ok){ c.pub(NET.mqTopic,msg); ok++; } }); if(ok) NET.mqT=now; else if(now-NET.mqT>20000) return lobbyOff('Verbindung zur Lobby verloren.');
@@ -2026,7 +2071,7 @@ function extraDyn(D,A,B,t,near,E,VP){ const dtR=1/60;
   const labs=$('mpL'); let li=0;
   MP.peers.forEach(o=>{ const k=.18; o.px=o.x; o.py=o.y; if(Math.hypot(o.tx-o.x,o.ty-o.y)>12){ o.x=o.tx; o.y=o.ty; } else { o.x+=(o.tx-o.x)*k; o.y+=(o.ty-o.y)*k; } o.h+=wrapA(o.th-o.h)*.2; const mv=Math.hypot(o.x-o.px,o.y-o.py); o.w=mv>.004?o.w+mv*2.6:0;
     if(o.in!==!!S.inB||(o.in&&o.rm!==(S.room==='casino'?'c':''))||!near(o.x,o.y,60)) return; const gy=groundY(o.x,o.y); HEADK=o.big?1.9:1;
-    if(o.car) car3(D,o.x,gy,o.y,o.car.a,o.car.t,o.car.col,{siren:false},t*1000); else guy3(D,o.x,gy,o.y,o.h,o.dn?Object.assign({dn:beatNow()*Math.PI},SKINS[o.k]):SKINS[o.k],o.w,false);
+    if(o.car) car3(D,o.x,gy,o.y,o.car.a,o.car.t,o.car.col,{siren:false},t*1000); else guy3(D,o.x,gy,o.y,o.h,o.dn?Object.assign({dn:beatNow()*Math.PI},SKINS[o.k]):SKINS[o.k],o.w,false); if(o.sm&&!o.car) smokePuffs(A,B,o.x,gy,o.y,o.h,o.sm===1?'k':'v',o.sm-2,t,.37,o.big);
     HEADK=S.big?1.9:1;
     const wy=gy+(o.car?.9:1.0), cw=VP[3]*o.x+VP[7]*wy+VP[11]*o.y+VP[15]; if(cw>.3&&li<8){ let d=labs.children[li]; if(!d){ d=document.createElement('div'); d.className='mpn'; labs.appendChild(d); }
       const sx=(VP[0]*o.x+VP[4]*wy+VP[8]*o.y+VP[12])/cw, sy=(VP[1]*o.x+VP[5]*wy+VP[9]*o.y+VP[13])/cw, say=Date.now()-o.mt<7000?o.ms:''; const tx=o.nick+(say?': '+say:''); if(d.textContent!==tx) d.textContent=tx; d.className=say?'mpn say':'mpn'; d.style.display='block'; d.style.left=((sx*.5+.5)*VW)+'px'; d.style.top=((.5-sy*.5)*VH)+'px'; li++; } });
@@ -2710,10 +2755,10 @@ function casUI(){ let el=$('cas'); if(el) return el; el=document.createElement('
   document.body.appendChild(el); $('casX').addEventListener('click',()=>casClose()); return el; }
 function casMoney(){ const m=$('casM'); if(m) m.textContent='💰 Bargeld: '+fmt(S.money); }
 function casMsg(t,cls){ const m=$('casMsg'); if(!m) return; m.textContent=t; m.className=cls||''; m.style.opacity=t?'1':'0'; }
-function casOpen(kind){ const el=casUI(); CAS.open=kind; CAS.busy=false; el.style.display='flex'; el.className='cas-'+kind; endJoy(); for(const k in keys) keys[k]=false; casMsg(''); casMoney();
-  const B=$('casB'); B.innerHTML=''; if(kind==='roul') rouBuild(B); else if(kind==='slot') slotBuild(B); else bjBuild(B); }
+function casOpen(kind){ const el=casUI(); CAS.open=kind; CAS.busy=false; CAS.back=null; $('casX').textContent='🚶 Aufstehen'; el.style.display='flex'; el.className='cas-'+kind; endJoy(); for(const k in keys) keys[k]=false; casMsg(''); casMoney();
+  const B=$('casB'); B.innerHTML=''; if(kind==='roul') rouBuild(B); else if(kind==='slot') slotBuild(B); else if(kind==='rubbel') rubBuild(B); else if(kind==='lotto') lottoBuild(B); else bjBuild(B); }
 function casClose(force){ if(!CAS.open) return; if(CAS.busy&&!force){ casMsg('Erst das laufende Spiel zu Ende spielen.','warn'); return; }
-  if(CAS.open==='roul') rouRefund(); if(CAS.open==='bj') bjRefund(); cancelAnimationFrame(CAS.raf); CAS.open=null; $('cas').style.display='none'; save(); updateHud(); }
+  if(CAS.open==='roul') rouRefund(); if(CAS.open==='bj') bjRefund(); cancelAnimationFrame(CAS.raf); CAS.open=null; $('cas').style.display='none'; save(); updateHud(); if(CAS.back){ const f=CAS.back; CAS.back=null; f(); } }
 function casLoss(){ const t=casStaff(); if(t) setTimeout(()=>casMsg(t.replace(/^\s+/,'').replace('💬 ',''),'staff'),900); }
 function chipRow(cur,onPick){ const vals=[100,200,500,1000,2500], cls=['c1','c2','c5','c10','c25'], r=document.createElement('div'); r.className='chipRow';
   vals.forEach((v,i)=>{ const b=document.createElement('button'); b.className='chip '+cls[i]+(v===cur?' on':''); b.textContent=v/100; b.title=fmt(v); b.addEventListener('click',()=>{ r.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b)); onPick(v); casSfx('chip',.6); }); r.appendChild(b); }); return r; }
@@ -2881,6 +2926,184 @@ function bjFinish(){ let win=0, bet=0; BJR.hands.forEach(h=>{ win+=h.win||0; bet
   if(win>bet){ casSfx('win'); casMsg('🎉 Auszahlung '+fmt(win)+' (Einsatz '+fmt(bet)+')','good'); } else if(win===bet&&win>0) casMsg('Einsatz zurück.'); else { casSfx('lose',.6); casMsg('Svetlana sammelt die Chips ein. „Nächste Runde?“','bad'); casLoss(); } }
 
 FEAT.push({ tick(dt){ casinoTick(dt||0); } });
+/* ===================== Tabak & Lotto „Blauer Dunst“ ===================== */
+// Kippen und Vapes sind billig, alles andere kostet übertrieben viel.
+const fmtL=c=>(c/100).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €', fmtS=c=>fmtL(c).replace(',00 €',' €');
+const TB_NAME='Tabak & Lotto „Blauer Dunst“';
+const TB_FLAV=[['Mango Ice',[1,.94,.82]],['Blue Razz',[.86,.91,1]],['Wassermelone',[1,.89,.91]]];
+function tb(){ if(!S.tb||typeof S.tb!=='object') S.tb={k:0,v:0,vf:0,s:0,fz:0}; return S.tb; }
+function nowAbs(){ return S.day*1440+S.min; }
+function tbOpen(){ return S.min>=6*60; }
+function tbHas(){ const t=tb(); return t.k>0||t.v>0||t.s>0; }
+const KEMAL=['Kemal guckt kurz vom Handy hoch. „Was brauchst du, Bruder?“',
+  '„Rubbellose bringen heute besonders Glück“, sagt Kemal. Sagt er jeden Tag.',
+  'Hinter der Theke läuft ein Fernseher mit Pferderennen ohne Ton. Kemal wettet in Gedanken mit.',
+  'Kemal: „Lotto heute Abend um sieben. Jackpot ist fett, ich schwör.“',
+  'Es riecht nach kaltem Rauch und Mango-Vape. Kemal sortiert Rubbellose nach Gefühl.'];
+
+/* ---------- Sucht, Toleranz, Schmacht ---------- */
+// S.sucht: 0–100, steigt mit jeder Dosis, sinkt langsam (6 % pro Spieltag)
+// S.nicHi: kurzfristiger Pegel – wer kettenraucht, spürt kaum noch was
+function schmacht(){ return (S.sucht||0)>=20&&S.nicLast!==undefined&&nowAbs()-S.nicLast>=Math.max(90,360-(S.sucht||0)*3); }
+function nicDrain(){ return schmacht()?1+(S.sucht||0)/100:1; }
+function nicTick(){ const n=nowAbs(); if(S.nicT0===undefined) S.nicT0=n; const d=n-S.nicT0; S.nicT0=n; if(d<=0) return;
+  S.nicHi=Math.max(0,(S.nicHi||0)-d*12/60); S.sucht=Math.max(0,(S.sucht||0)-d*6/1440);
+  const sc=schmacht(); if(sc&&!S.schm&&running&&!dlgOpen){ toast('🚬 Bong hat Schmacht. Ohne Nachschub wird er schneller müde.'); } S.schm=sc; }
+
+/* ---------- Rauchen ---------- */
+const SMK={t:0,kind:'',tint:0};
+function tbSfx(k){ if(!AC||S.mute) return; try{ const t=AC.currentTime;
+  const noise=(st,d,f,q,peak,shape)=>{ const n=AC.createBufferSource(), b=AC.createBuffer(1,Math.floor(AC.sampleRate*d),AC.sampleRate), c=b.getChannelData(0); for(let i=0;i<c.length;i++){ const x=i/c.length; c[i]=(Math.random()*2-1)*(shape==='swell'?Math.sin(Math.PI*x):Math.pow(1-x,3)); } n.buffer=b; const fl=AC.createBiquadFilter(); fl.type='bandpass'; fl.frequency.value=f; fl.Q.value=q; const g=AC.createGain(); g.gain.value=peak*.25; n.connect(fl); fl.connect(g); g.connect(AC.destination); n.start(t+st); };
+  if(k==='light'){ noise(0,.04,4200,3,1.4); noise(.07,.05,3000,2,1); noise(.12,.5,900,.7,.5,'swell'); }
+  else if(k==='puff') noise(0,1.1,700,.6,.6,'swell');
+  else if(k==='snus') noise(0,.08,2500,2,.6);
+  else if(k==='scratch') noise(0,.07,2600+Math.random()*1500,1.2,.35);
+  }catch(e){} }
+function smokeMenu(){ if(!running||dlgOpen||casIsOpen()||grafIsOpen()||mapOpen) return; const t=tb(), o=[];
+  if(t.k>0) o.push({label:'🚬 Kippe rauchen ('+t.k+' übrig)',fn:()=>doSmoke('k')});
+  if(t.v>0) o.push({label:'💨 Vape ziehen – '+TB_FLAV[t.vf][0]+' (noch '+Math.ceil(t.v/10)+' Züge)',fn:()=>doSmoke('v')});
+  if(t.s>0) o.push({label:'🧊 Snus unter die Lippe ('+t.s+' übrig)',fn:()=>doSmoke('s')});
+  if(!o.length){ toast('Nichts zum Rauchen dabei. Bei '+TB_NAME+' gibt es alles.'); return; }
+  if(o.length===1){ o[0].fn(); updateHud(); save(); return; }
+  dialog('🚬 Was darf’s sein?','Sucht: '+Math.round(S.sucht||0)+' %'+(schmacht()?' · Schmacht!':''),o.concat([{label:'Doch nicht'}])); }
+function doSmoke(kind){ const t=tb();
+  if(kind!=='s'&&typeof inCasino==='function'&&inCasino()){ toast('🚭 Rauchen verboten! Jutta zeigt auf das Schild.'); return; }
+  if(kind!=='s'&&SMK.t>0){ toast('Eine nach der anderen.'); return; }
+  if(kind==='k'&&!t.fz){ let lit=false; let asked=false; for(const p of peds){ if(!(p.down>0)&&Math.hypot(p.x-S.x,p.y-S.y)<3){ asked=true; lit=Math.random()<.65; break; } }
+    if(!lit){ toast(asked?'„Haste ma Feuer?“ – „Nee, sorry.“ Kauf dir lieber ein Feuerzeug bei Kemal.':'Kein Feuerzeug. Frag wen in der Nähe nach Feuer – oder kauf eins bei Kemal.'); return; }
+    toast('„Haste ma Feuer?“ – Ein Passant gibt dir Feuer.'); }
+  const E={k:[10,4,35,4],v:[6,2,18,2.5],s:[16,5,50,5]}[kind], f=Math.max(.15,1-(S.nicHi||0)/100), wasSc=schmacht();
+  if(kind==='k') t.k--; else if(kind==='v') t.v=Math.max(0,t.v-10); else t.s--;
+  S.energy=clamp(S.energy+E[0]*f,0,100); eat(E[1]*f); S.nicHi=Math.min(100,(S.nicHi||0)+E[2]); S.sucht=Math.min(100,(S.sucht||0)+E[3]); S.nicLast=nowAbs(); S.nicT0=nowAbs(); S.schm=false;
+  if(kind==='k'){ S.st.kippen=(S.st.kippen||0)+1; if(S.st.kippen>=50) unlock('kette'); }
+  if(kind!=='s'){ SMK.t=kind==='k'?9:3.4; SMK.kind=kind; SMK.tint=t.vf||0; tbSfx(kind==='k'?'light':'puff'); } else tbSfx('snus');
+  if(kind==='k'&&t.fz&&Math.random()<.04){ t.fz=0; setTimeout(()=>toast('Feuerzeug weg. Wie immer.'),1800); }
+  if(kind==='v'&&t.v%100===0) setTimeout(()=>toast(t.v>0?'Vape leer – du nimmst die nächste.':'Vape ist leer. Blinkt nur noch traurig.'),1200);
+  const msg=f<.45?'Kaum noch Wirkung – du hattest gerade erst eine.':wasSc?'Ahh. Die Schmacht ist weg.':kind==='k'?'Erster Zug, Bong ist wieder da.':kind==='v'?'Dicke Wolke, '+TB_FLAV[t.vf][0]+'.':'Brennt wie Hölle unter der Lippe. Bong ist hellwach.';
+  toast((kind==='s'?'🧊 ':kind==='v'?'💨 ':'🚬 ')+msg+' (+'+Math.round(E[0]*f)+' Energie)');
+  if(kind==='s'&&(S.nicHi||0)>85) setTimeout(()=>toast('Dir wird kurz schwindelig.'),1500); }
+function smokeTick(dt){ if(SMK.t>0) SMK.t=Math.max(0,SMK.t-dt); const b=$('smkBtn'); if(b){ const on=tbHas(); if((b.style.display!=='none')!==on) b.style.display=on?'':'none'; } }
+function smokeCode(){ return SMK.t>0&&!drv?(SMK.kind==='k'?1:2+(SMK.tint||0)):0; }
+// Rauch am Mund: kind 'k' = dünne Fahne, 'v' = dicke Wolke
+function smokePuffs(A,B,x,y,z,h,kind,tint,t,seed,big){ const k=kind==='v', fx=Math.cos(h), fz=Math.sin(h), mh=(big?.82:.62);
+  const mx=x+fx*.09, mz=z+fz*.09, my=y+mh, c=k?TB_FLAV[tint]?TB_FLAV[tint][1]:[1,1,1]:[.72,.75,.82], n=k?10:6;
+  for(let i=0;i<n;i++){ const q=((t*(k?.5:.32))+i/n+seed)%1, dr=Math.sin(i*2.3+seed*6+t*.7)*(k?.18:.1)*q, s=(k?.2:.08)+q*(k?.95:.5), fw=q*(k?.55:.12);
+    A.bill(mx+fx*fw+dr*fz, my+q*(k?.55:1.1)-s*.5, mz+fz*fw-dr*fx, s*.5, s, 0, c[0],c[1],c[2], (k?.85:.65)*(1-q)*(q<.08?q/.08:1)); }
+  if(!k){ const g=.6+Math.sin(t*9+seed*20)*.25; B.bill(x+fx*.16,my-.015,z+fz*.16,.03,.03,0,1,.45,.1,g); } }
+function tabakDyn(A,B,t){ if(SMK.t>0&&!drv&&camDist>.6) smokePuffs(A,B,S.x,pY,S.y,heading,SMK.kind,SMK.tint,t,0,!!S.big); }
+
+/* ---------- Laden ---------- */
+function tabakHd(){ const t=tb(); return '\n\nGeld: '+fmt(S.money)+' · Kippen: '+t.k+(t.v>0?' · Vape: '+Math.ceil(t.v/10)+' Züge':'')+(t.s?' · Snus: '+t.s:'')+(t.fz?' · 🔥 Feuerzeug':' · kein Feuerzeug'); }
+HANDLERS.tabak=function(){ if(!tbOpen()){ info('🚬 '+TB_NAME,'Rollladen unten. Auf einem Zettel: „Ab 6 Uhr wieder da. Kemal“'); return; } tabakMain(); };
+function tabakMain(msg){ const due=lottoDue().length, o=[];
+  if(S.rubP) o.push({label:'🎟️ Angefangenes Los weiterrubbeln',fn:()=>rubStart(null)});
+  o.push({label:'🚬 Kippen, Vapes & Snus',fn:tabakSmoke},{label:'🎟️ Rubbellose',fn:tabakRubbel},{label:'🎱 Lotto 6 aus 49 – '+fmt(LOTTO_PRICE)+' pro Tipp',fn:()=>{ casOpen('lotto'); }});
+  if(due) o.push({label:'🎫 Lottoscheine prüfen lassen ('+due+')',fn:lottoCheck});
+  o.push({label:'🍫 Snacks, Getränke & Zeitung',fn:tabakSnack},{label:'Tschüss',fn:()=>{}});
+  dialog('🚬 '+TB_NAME,(msg||(schmacht()?'Kemal: „Du siehst aus, als bräuchtest du dringend eine.“':pick(KEMAL)))+tabakHd(),o); }
+function tabakSmoke(){ const t=tb(), buy=(lab,c,fn)=>({label:lab+' – '+fmt(c),fn:()=>{ if(pay(c)){ fn(); sfx('cash'); } tabakSmoke(); }});
+  const o=[buy('🚬 Schachtel „Rote Lunge“ (20 Kippen)',420,()=>{ t.k+=20; }),buy('🚬 Einzelkippe aus der Dose',30,()=>{ t.k+=1; })];
+  if(t.v<=200) TB_FLAV.forEach((fl,i)=>o.push(buy('💨 Einweg-Vape „Wolke 7“ '+fl[0]+' (10 Züge)',550,()=>{ t.v=Math.min(300,t.v+100); t.vf=i; })));
+  else o.push({label:'💨 Vapes – du hast schon drei dabei',disabled:true});
+  o.push(buy('🧊 Snus „Eisbär Extra Strong“ (20 Beutel)',1490,()=>{ t.s+=20; }));
+  if(!t.fz) o.push(buy('🔥 Feuerzeug',450,()=>{ t.fz=1; }));
+  o.push({label:'↩ Zurück',fn:()=>tabakMain()});
+  dialog('🚬 Tabakwaren','Kippen und Vapes sind hier echt günstig. Der Rest nicht. Rauchen mit Taste R oder dem 🚬-Knopf.'+tabakHd(),o); }
+const NEWS=['„Bürgermeister Diätenberg verspricht neue Parkbänke – mit Armlehnen“','„Pfandpreise stabil – Experten raten weiter zum Sammeln“','„Möwe klaut Döner am Hafen – Polizei ermittelt“','„Spielothek Goldene Sonne: Croupier Enrico feiert 20 Jahre im Dienst“','„Club im Bunker: Anwohner beschweren sich über den Bass“','„Rentnerin gewinnt Kreuzworträtsel zum dritten Mal in Folge“','„Wer sprüht die S-Bahn an? Polizei tappt im Dunkeln“','„Neuer Rekord: Kiosk verkauft 400 Rubbellose an einem Tag“'];
+function tabakSnack(){ const back=()=>tabakSnack();
+  const o=[shopItem(['🥤','Energy „Bullenkraft“',490,0,14],back),shopItem(['🍫','Schokoriegel „Knusperkönig“',390,8,0],back),shopItem(['🍬','Kaugummi „Minzbombe“',320,1,0],back),
+    {label:'💧 Wasser 0,5 l – 2,90 € (+2 satt, +2 Energie, Pfandflasche)',fn:()=>{ if(pay(290)){ eat(2); S.energy=clamp(S.energy+2,0,100); emptyIn(25,'Flasche, 25 Cent'); } tabakSnack(); }},
+    {label:'📰 Zeitung „Bongstädter Blatt“ – 3,50 €',fn:()=>{ if(!pay(350)){ tabakSnack(); return; } const d=S.min>=19*60?S.day:S.day-1;
+      info('📰 Bongstädter Blatt','Schlagzeile: '+pick(NEWS)+'\n\n'+(d>=1?'🎱 Lottozahlen von Tag '+d+': '+lottoNums(d).join(' · '):'Lottozahlen: Die erste Ziehung ist heute um 19 Uhr.'),()=>tabakSnack()); }},
+    {label:'↩ Zurück',fn:()=>tabakMain()}];
+  dialog('🍫 Snacks & Getränke','Die Preise hat Kemal mit Edding drübergeschrieben. Mehrmals.'+tabakHd(),o); }
+
+/* ---------- Rubbellose ---------- */
+const RUBS={
+  keks:{n:'Glückskeks',ic:'🥠',price:400,cells:6,cols:3,amts:[200,400,800,2000,10000,100000],tab:[[400,.14],[800,.05],[2000,.02],[10000,.002],[100000,.0001]]},
+  gold:{n:'Goldrausch',ic:'💰',price:1500,cells:9,cols:3,amts:[1000,1500,3000,7500,30000,250000,2500000],tab:[[1500,.13],[3000,.05],[7500,.02],[30000,.004],[250000,.0004],[2500000,.00002]]}};
+function rubDeal(id){ const T=RUBS[id]; let win=0, r=Math.random(), acc=0; for(const [a,p] of T.tab){ acc+=p; if(r<acc){ win=a; break; } }
+  const cells=win?[win,win,win]:[], pool=T.amts.filter(a=>a!==win), cnt={};
+  while(cells.length<T.cells){ const a=pool[Math.floor(Math.random()*pool.length)]; if((cnt[a]||0)>=2) continue; cnt[a]=(cnt[a]||0)+1; cells.push(a); }
+  for(let i=cells.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const x=cells[i]; cells[i]=cells[j]; cells[j]=x; }
+  return {id,cells,win}; }
+function rubWinOf(cells){ const c={}; for(const a of cells) c[a]=(c[a]||0)+1; let w=0; for(const a in c) if(c[a]>=3) w=Math.max(w,+a); return w; }
+function tabakRubbel(){ const o=Object.keys(RUBS).map(id=>{ const T=RUBS[id]; return {label:T.ic+' „'+T.n+'“ – '+fmt(T.price)+' (Hauptgewinn '+fmtS(T.amts[T.amts.length-1])+')',fn:()=>{ if(S.rubP){ toast('Erst das angefangene Los fertig rubbeln.'); tabakRubbel(); return; } if(!pay(T.price)){ tabakRubbel(); return; } rubStart(id); }}; });
+  dialog('🎟️ Rubbellose','Drei gleiche Beträge = Gewinn. Kemal: „Gestern hat einer fast gewonnen.“'+tabakHd(),o.concat([{label:'↩ Zurück',fn:()=>tabakMain()}])); }
+function rubStart(id){ if(id){ S.rubP=rubDeal(id); S.st.lose=(S.st.lose||0)+1; save(); } casOpen('rubbel'); }
+const RB={raf:0};
+function rubBuild(B){ if(typeof cancelAnimationFrame==='function') cancelAnimationFrame(RB.raf); const tok=RB.tok=(RB.tok||0)+1; const P=S.rubP; if(!P){ casClose(true); return; } const T=RUBS[P.id]; $('casT').textContent='🎟️ Rubbellos „'+T.n+'“';
+  const w=document.createElement('div'); w.className='rubWrap';
+  w.innerHTML='<div class="rubTicket rub-'+P.id+'"><div class="rubHead"><span class="rubIc">'+T.ic+'</span><b>'+T.n.toUpperCase()+'</b><span class="rubPr">'+fmt(T.price)+'</span></div>'+
+    '<div class="rubSub">3 gleiche Beträge aufrubbeln – Betrag gewonnen!</div><div class="rubPlay"><div class="rubGrid" style="grid-template-columns:repeat('+T.cols+',1fr)">'+
+    P.cells.map((a,i)=>'<div class="rubCell" data-i="'+i+'"><span>'+T.ic+'</span><b>'+fmtS(a)+'</b></div>').join('')+'</div><canvas id="rubC"></canvas></div>'+
+    '<div class="rubFoot">Hauptgewinn '+fmtS(T.amts[T.amts.length-1])+' · Gewinne an der Kasse · Los-Nr. '+(100000+Math.floor(Math.random()*899999))+'</div></div>'+
+    '<div class="btnRow"><button class="gfB" id="rubAll">🪙 Rest freirubbeln</button><button class="gfB gfMain" id="rubNew" style="display:none">Noch eins – '+fmt(T.price)+'</button></div>';
+  B.appendChild(w); $('casX').textContent='↩ Zur Theke'; CAS.back=()=>tabakMain();
+  const cv=$('rubC'), play=w.querySelector('.rubPlay'), g=cv.getContext('2d',{willReadFrequently:true}); let W=0,H=0,dpr=1, rev=new Array(T.cells).fill(false), done=false, down=false, lx=0, ly=0, dirty=0, lastS=0;
+  const coat=()=>{ const r=play.getBoundingClientRect(); dpr=Math.min(2,window.devicePixelRatio||1); W=Math.max(10,Math.round(r.width*dpr)); H=Math.max(10,Math.round(r.height*dpr)); cv.width=W; cv.height=H;
+    g.globalCompositeOperation='source-over'; const gr=g.createLinearGradient(0,0,W,H); gr.addColorStop(0,'#c9cdd3'); gr.addColorStop(.35,'#f2f3f5'); gr.addColorStop(.55,'#a9aeb6'); gr.addColorStop(1,'#d9dce1'); g.fillStyle=gr; g.fillRect(0,0,W,H);
+    g.globalAlpha=.18; g.strokeStyle='#5a606a'; g.lineWidth=1*dpr; for(let x=-H;x<W;x+=7*dpr){ g.beginPath(); g.moveTo(x,0); g.lineTo(x+H,H); g.stroke(); } g.globalAlpha=1;
+    const cells=w.querySelectorAll('.rubCell'), pr=play.getBoundingClientRect(); g.font='800 '+Math.round(11*dpr)+'px system-ui,sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+    cells.forEach((c,i)=>{ const q=c.getBoundingClientRect(), x=(q.left-pr.left)*dpr, y=(q.top-pr.top)*dpr, cw=q.width*dpr, ch=q.height*dpr; if(rev[i]){ g.clearRect(x,y,cw,ch); return; }
+      g.fillStyle='rgba(90,96,106,.55)'; g.fillText('RUBBELN',x+cw/2,y+ch/2-6*dpr); g.fillText(T.ic,x+cw/2,y+ch/2+9*dpr); }); };
+  const rects=()=>{ const pr=play.getBoundingClientRect(); return [...w.querySelectorAll('.rubCell')].map(c=>{ const q=c.getBoundingClientRect(); return [(q.left-pr.left)*dpr,(q.top-pr.top)*dpr,q.width*dpr,q.height*dpr]; }); };
+  const check=()=>{ if(done) return; let id; try{ id=g.getImageData(0,0,W,H).data; }catch(e){ return; } const R=rects();
+    R.forEach(([x,y,cw,ch],i)=>{ if(rev[i]) return; let n=0,o=0; for(let sy=0;sy<6;sy++) for(let sx=0;sx<8;sx++){ const px=Math.floor(x+cw*(sx+.5)/8), py=Math.floor(y+ch*(sy+.5)/6); if(px<0||py<0||px>=W||py>=H) continue; n++; if(id[(py*W+px)*4+3]<60) o++; }
+      if(n&&o/n>=.55){ rev[i]=true; g.clearRect(x-1,y-1,cw+2,ch+2); casSfx('tick',.5); } });
+    if(rev.every(Boolean)) finish(); };
+  const finish=()=>{ if(done) return; done=true; g.clearRect(0,0,W,H); const P2=S.rubP; S.rubP=null; const win=P2?rubWinOf(P2.cells):0;
+    if(win){ w.querySelectorAll('.rubCell').forEach((c,i)=>{ if(P2.cells[i]===win) c.classList.add('hit'); }); earn(win,'Rubbellos'); casSfx(win>=10000?'big':'win'); casMsg('🎉 Drei mal '+fmtL(win)+' – gewonnen!','good'); S.st.losWin=(S.st.losWin||0)+win; }
+    else { casSfx('lose'); casMsg(pick(['Niete. Kemal: „Nächstes Mal, Bruder.“','Leider nichts. Zwei gleiche zählen nicht.','Fast! Aber eben nur fast.']),'bad'); }
+    $('rubAll').style.display='none'; $('rubNew').style.display=''; casMoney(); save(); };
+  const pos=e=>{ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)*dpr,(e.clientY-r.top)*dpr]; };
+  const scr=(x,y)=>{ g.globalCompositeOperation='destination-out'; g.lineCap='round'; g.lineJoin='round'; g.lineWidth=22*dpr; g.beginPath(); g.moveTo(lx,ly); g.lineTo(x,y); g.stroke(); g.beginPath(); g.arc(x,y,11*dpr,0,Math.PI*2); g.fill(); g.globalCompositeOperation='source-over'; lx=x; ly=y; dirty++;
+    const n=performance.now(); if(n-lastS>70){ lastS=n; tbSfx('scratch'); } };
+  cv.addEventListener('pointerdown',e=>{ if(done) return; e.preventDefault(); down=true; try{ cv.setPointerCapture(e.pointerId); }catch(_){} [lx,ly]=pos(e); scr(lx+.1,ly+.1); });
+  cv.addEventListener('pointermove',e=>{ if(!down||done) return; const [x,y]=pos(e); scr(x,y); });
+  const up=()=>{ if(!down) return; down=false; check(); }; cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up);
+  const loop=()=>{ if(CAS.open!=='rubbel'||RB.tok!==tok) return; if(dirty>12){ dirty=0; check(); } RB.raf=requestAnimationFrame(loop); }; RB.raf=requestAnimationFrame(loop);
+  $('rubAll').addEventListener('click',()=>{ w.querySelectorAll('.rubCell').forEach((c,i)=>rev[i]=true); finish(); });
+  $('rubNew').addEventListener('click',()=>{ if(!pay(T.price)) { casMsg('Zu wenig Geld.','warn'); return; } S.rubP=rubDeal(P.id); S.st.lose=(S.st.lose||0)+1; casOpen('rubbel'); });
+  requestAnimationFrame(coat); RB.coat=()=>{ if(done||RB.tok!==tok) return; const old=document.createElement('canvas'); old.width=W; old.height=H; old.getContext('2d').drawImage(cv,0,0); const r=play.getBoundingClientRect(); W=Math.max(10,Math.round(r.width*dpr)); H=Math.max(10,Math.round(r.height*dpr)); cv.width=W; cv.height=H; g.drawImage(old,0,0,W,H); };
+  if(!RB.rs){ RB.rs=1; addEventListener('resize',()=>{ if(CAS.open==='rubbel'&&RB.coat) RB.coat(); }); } }
+
+/* ---------- Lotto 6 aus 49 ---------- */
+const LOTTO_PRICE=1250, LOTTO_PAY={3:1200,4:6000,5:350000,6:250000000};
+function lottoSeed(){ if(!S.lseed) S.lseed=1+Math.floor(Math.random()*1e9); return S.lseed; }
+function lottoNums(d){ const r=mulberry(d*7919+lottoSeed()), a=[]; for(let i=1;i<=49;i++) a.push(i); for(let i=48;i>0;i--){ const j=Math.floor(r()*(i+1)); const x=a[i]; a[i]=a[j]; a[j]=x; } return a.slice(0,6).sort((x,y)=>x-y); }
+function lottoDrawDay(){ return S.min>=19*60?S.day+1:S.day; }  // für welche Ziehung ein neuer Schein gilt
+function lottoDone(d){ return d<S.day||(d===S.day&&S.min>=19*60); }
+function lottoDue(){ return (S.lotto||[]).filter(t=>lottoDone(t.d)); }
+function lottoHits(t){ const w=lottoNums(t.d); return t.n.filter(x=>w.includes(x)).length; }
+function lottoCheck(){ const due=lottoDue(); let sum=0, best=0; const L=due.map(t=>{ const h=lottoHits(t), p=LOTTO_PAY[h]||0; sum+=p; best=Math.max(best,h); return 'Tag '+t.d+': '+t.n.join(' ')+' → '+h+' Richtige'+(p?' = '+fmtL(p):''); });
+  S.lotto=(S.lotto||[]).filter(t=>!lottoDone(t.d)); if(sum){ earn(sum,'Lotto'); if(best>=4) unlock('lotto'); }
+  info('🎫 Lottoscheine',L.join('\n')+'\n\n'+(sum?'Kemal zählt dir '+fmt(sum)+' auf den Tresen.':'Kemal schreddert die Scheine. „Nächstes Mal, Bruder.“'),()=>tabakMain()); }
+function lottoTick(){ if(S.lottoSeen===undefined) S.lottoSeen=lottoDone(S.day)?S.day:S.day-1; const d=lottoDone(S.day)?S.day:S.day-1; if(d<=S.lottoSeen) return; const from=S.lottoSeen+1; S.lottoSeen=d;
+  const mine=(S.lotto||[]).filter(t=>t.d>=from&&t.d<=d); if(!mine.length) return; const best=Math.max(...mine.map(lottoHits)), last=Math.max(...mine.map(t=>t.d));
+  banner('🎱 Lottozahlen Tag '+last+': '+lottoNums(last).join(' · '),best>=3?'Du hast '+best+' Richtige! Gewinn bei Kemal abholen.':'Leider nichts dabei.'); }
+const LT={sel:[]};
+function lottoBuild(B){ $('casT').textContent='🎱 Lotto 6 aus 49'; $('casX').textContent='↩ Zur Theke'; CAS.back=()=>tabakMain(); LT.sel=[];
+  const d=lottoDrawDay(), w=document.createElement('div'); w.className='ltWrap';
+  w.innerHTML='<div class="ltSlip"><div class="ltHead"><b>LOTTO</b><span>6 aus 49</span><i>Ziehung Tag '+d+' · 19:00 Uhr</i></div><div class="ltGrid" id="ltG"></div>'+
+    '<div class="ltBar"><button class="gfB" id="ltQ">🎲 Quicktipp</button><button class="gfB" id="ltC">Löschen</button><button class="gfB gfMain" id="ltGo" disabled>✅ Abgeben – '+fmt(LOTTO_PRICE)+'</button></div></div>'+
+    '<div class="ltSide"><div class="ltBox"><b>Gewinnplan</b><div>3 Richtige: '+fmtS(LOTTO_PAY[3])+'</div><div>4 Richtige: '+fmtS(LOTTO_PAY[4])+'</div><div>5 Richtige: '+fmtS(LOTTO_PAY[5])+'</div><div>6 Richtige: <b class="ltJack">'+fmtS(LOTTO_PAY[6])+'</b></div></div>'+
+    '<div class="ltBox"><b>Deine Tipps für Tag '+d+'</b><div id="ltMine"></div></div><div class="ltBox"><b id="ltLastT"></b><div class="ltBalls" id="ltLast"></div></div></div>';
+  B.appendChild(w); const G=$('ltG');
+  for(let n=1;n<=49;n++){ const b=document.createElement('button'); b.className='ltN'; b.textContent=n; b.dataset.n=n; b.addEventListener('click',()=>{ const i=LT.sel.indexOf(n); if(i>=0) LT.sel.splice(i,1); else if(LT.sel.length<6) LT.sel.push(n); else { casMsg('Nur 6 Kreuze pro Tipp.','warn'); return; } casSfx('tick',.6); lottoRender(); }); G.appendChild(b); }
+  $('ltQ').addEventListener('click',()=>{ const a=[]; while(a.length<6){ const n=1+Math.floor(Math.random()*49); if(!a.includes(n)) a.push(n); } LT.sel=a; casSfx('chip',.6); lottoRender(); });
+  $('ltC').addEventListener('click',()=>{ LT.sel=[]; lottoRender(); });
+  $('ltGo').addEventListener('click',()=>{ if(LT.sel.length!==6) return; if(lottoDrawDay()!==d){ casMsg('Die Ziehung ist schon gelaufen – neuer Schein gilt für morgen.','warn'); casOpen('lotto'); return; } const mine=(S.lotto||[]).filter(t=>t.d===d); if(mine.length>=8){ casMsg('Mehr als 8 Tipps pro Ziehung nimmt Kemal nicht an.','warn'); return; }
+    if(!pay(LOTTO_PRICE)){ casMsg('Zu wenig Geld für einen Tipp.','warn'); return; } (S.lotto=S.lotto||[]).push({d,n:LT.sel.slice().sort((a,b)=>a-b)}); S.st.lotto=(S.st.lotto||0)+1; casSfx('card'); casMsg('Tipp abgegeben. Ziehung Tag '+d+' um 19 Uhr.','good'); LT.sel=[]; casMoney(); save(); lottoRender(); });
+  const ld=lottoDone(S.day)?S.day:S.day-1; $('ltLastT').textContent=ld>=1?'Letzte Ziehung (Tag '+ld+')':'Letzte Ziehung'; $('ltLast').innerHTML=ld>=1?lottoNums(ld).map(n=>'<span class="ltBall">'+n+'</span>').join(''):'<i>Noch keine – die erste ist heute um 19 Uhr.</i>';
+  lottoRender(); }
+function lottoRender(){ const d=lottoDrawDay(); document.querySelectorAll('#ltG .ltN').forEach(b=>b.classList.toggle('on',LT.sel.includes(+b.dataset.n)));
+  const go=$('ltGo'); if(go) go.disabled=LT.sel.length!==6; const m=$('ltMine'); if(m){ const mine=(S.lotto||[]).filter(t=>t.d===d); m.innerHTML=mine.length?mine.map(t=>'<div class="ltTip">'+t.n.join(' · ')+'</div>').join(''):'<i>Noch keine.</i>'; }
+  if(LT.sel.length&&LT.sel.length<6) casMsg('Noch '+(6-LT.sel.length)+' Kreuz'+(6-LT.sel.length===1?'':'e')+' setzen.',''); else if(LT.sel.length===6) casMsg('Sechs Kreuze – jetzt abgeben.',''); }
+
+ACH.kette={n:'Kettenraucher',d:'50 Kippen geraucht'}; ACH.lotto={n:'Lottokönig',d:'Mit mindestens vier Richtigen im Lotto gewonnen'};
+if($('smkBtn')) $('smkBtn').addEventListener('click',()=>smokeMenu());
+FEAT.push({tick(dt){ nicTick(); smokeTick(dt||0); lottoTick(); }});
 
 function questTarget(){ const j=S.job;
   if(S.wanted>0&&drv) return POI.manni;
@@ -2899,7 +3122,7 @@ function updateHud(){ if(!S) return; goalHud();
   const h=$('hHun'), e=$('hEn'); h.style.width=Math.round(S.hunger)+'%'; e.style.width=Math.round(S.energy)+'%';
   h.style.background=S.hunger<20?'#e04a3a':S.hunger<45?'#f2b632':'#6fd36f'; e.style.background=S.energy<20?'#e04a3a':S.energy<45?'#f2b632':'#5fb0f0';
   $('hTime').textContent=(isNight()?'🌙':'☀️')+(snowing()?'❄️':'')+' Tag '+S.day+' · '+clock(); $('hDist').textContent=DIST[distAt(S.x,S.y)].name;
-  const st=S.wanted>0?starStr():'', pr=(S.pro>.05?'🍺 '+proStr():'')+(S.mehlT>0?' ⚡ '+Math.ceil(S.mehlT/2)+' s':S.downT>0?' 😵':''), cr=drv?'🚗 '+Math.round(drv.hp)+' %':'';
+  const st=S.wanted>0?starStr():'', pr=(S.pro>.05?'🍺 '+proStr():'')+(schmacht()?' 🚬 Schmacht':'')+(S.mehlT>0?' ⚡ '+Math.ceil(S.mehlT/2)+' s':S.downT>0?' 😵':''), cr=drv?'🚗 '+Math.round(drv.hp)+' %':'';
   $('hStars').textContent=st; $('hPro').textContent=pr; $('hCar').textContent=cr; $('hX').style.display=(st||pr||cr)?'flex':'none';
   const live=running&&!dlgOpen&&!mapOpen, p=live?actionPoi():null, a=$('act'), cb=$('carBtn');
   const an=$('actName');
@@ -2940,7 +3163,7 @@ function startGame(fresh){ initAudio(); const l=fresh?null:load(); S=l||newState
 })();
 window.__game={get S(){return S},POIS,POI,HANDLERS,CT,update,render,chooseOption,openMenu,get dlg(){return dlgOpen},startGame,isSolid,tileAt,
   get bottles(){return bottles},get vcars(){return vcars},get cars(){return cars},get chasers(){return chasers},get drv(){return drv},
-  enterCar,exitCar,addWanted,snowSleep,drink,fourPromille,busted,snowing,snowOn,freeC,R3,get glOK(){return glOK},get heading(){return heading},get camA(){return camA},set camA(x){camA=x},get camP(){return camP},get camZ(){return camZ},gmSpawn,gmTick,gmTarget,gmDone,mpPeers,get MP(){return MP},get NET(){return NET},get Q(){return Q},enterCasino,freeP,casPending,thOrder,thSkip,CU,leaveCasino,inCasino,casOpen,casClose,get CAS(){return CAS},get ROU(){return ROU},get SL(){return SL},get BJR(){return BJR},rouWin,rouPayout,rouSpin,rouBet,slotSpin,slotPay,STRIP,REELPAY,bjV,bjDeal,bjHit,bjStand,bjDouble,bjSplit,bjShoe,WHEEL,CK,musVol,mvSet,get tutS(){return tutS},pzState,pzStart,pzOn,moNew,moCar,flohFind,flohOpen,LATE,get vcars2(){return vcars},krisTake,tagList,tgState,tgOn,tgStart,polOn,polDown,polState,slotWin,slotSym,bjVal,bjCard,get BJ(){return BJ},rCol,cas,grafOpen,grafClose,grafSurf,trainOff,cans,get GP(){return GP},GUARD,sprayAt,goJail,jailDialog,arrestEnd,bankMove,bankTick,atmSpot,get TK(){return TK},thomasOn,curCtr,curTrk,THOMAS_URL,frState,frStart,frOn,STUNTS,mwState,mwStart,mwOn,featGoal,featTarget,SHOPS,doorSpot,save,get CU(){return CU},mp3List,mp3Add,embedOf,cuPick,customTick,get MP3S(){return MP3S},qSet,get drawnCh(){return drawnCh},get DPR(){return DPR},get R3(){return R3},lobbyStart,lobbyOff,genCode,mpMine,mpSay,chatDialog,eggKey,bigHeads,BINS,GNOME,GOLD,DUCK,UFO,tunnelWrap,goalInfo,get HEADK(){return HEADK},mtnH,camBlocked,technoTest,TRACKS,enterBunker,leaveBunker,mehlLine,addLink,getLinks,linkDialog,BK,openMap,closeMap,get mapOpen(){return mapOpen},set heading(x){heading=x},setKeys(o){ for(const k in keys) keys[k]=false; Object.assign(keys,o); }};
+  enterCar,exitCar,addWanted,snowSleep,drink,fourPromille,busted,snowing,snowOn,freeC,R3,get glOK(){return glOK},get heading(){return heading},get camA(){return camA},set camA(x){camA=x},get camP(){return camP},get camZ(){return camZ},gmSpawn,gmTick,gmTarget,gmDone,mpPeers,get MP(){return MP},get NET(){return NET},get Q(){return Q},enterCasino,freeP,tb,doSmoke,smokeMenu,schmacht,nicDrain,nowAbs,SMK,smokeCode,RUBS,rubDeal,rubWinOf,lottoNums,lottoDue,lottoCheck,lottoDrawDay,LOTTO_PAY,LOTTO_PRICE,tabakMain,casPending,thOrder,thSkip,CU,leaveCasino,inCasino,casOpen,casClose,get CAS(){return CAS},get ROU(){return ROU},get SL(){return SL},get BJR(){return BJR},rouWin,rouPayout,rouSpin,rouBet,slotSpin,slotPay,STRIP,REELPAY,bjV,bjDeal,bjHit,bjStand,bjDouble,bjSplit,bjShoe,WHEEL,CK,musVol,mvSet,get tutS(){return tutS},pzState,pzStart,pzOn,moNew,moCar,flohFind,flohOpen,LATE,get vcars2(){return vcars},krisTake,tagList,tgState,tgOn,tgStart,polOn,polDown,polState,slotWin,slotSym,bjVal,bjCard,get BJ(){return BJ},rCol,cas,grafOpen,grafClose,grafSurf,trainOff,cans,get GP(){return GP},GUARD,sprayAt,goJail,jailDialog,arrestEnd,bankMove,bankTick,atmSpot,get TK(){return TK},thomasOn,curCtr,curTrk,THOMAS_URL,frState,frStart,frOn,STUNTS,mwState,mwStart,mwOn,featGoal,featTarget,SHOPS,doorSpot,save,get CU(){return CU},mp3List,mp3Add,embedOf,cuPick,customTick,get MP3S(){return MP3S},qSet,get drawnCh(){return drawnCh},get DPR(){return DPR},get R3(){return R3},lobbyStart,lobbyOff,genCode,mpMine,mpSay,chatDialog,eggKey,bigHeads,BINS,GNOME,GOLD,DUCK,UFO,tunnelWrap,goalInfo,get HEADK(){return HEADK},mtnH,camBlocked,technoTest,TRACKS,enterBunker,leaveBunker,mehlLine,addLink,getLinks,linkDialog,BK,openMap,closeMap,get mapOpen(){return mapOpen},set heading(x){heading=x},setKeys(o){ for(const k in keys) keys[k]=false; Object.assign(keys,o); }};
 })();
 </script>
 </body>
