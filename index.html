@@ -206,6 +206,18 @@
   .ltBalls{display:flex;gap:6px;flex-wrap:wrap}
   .ltBall{width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#ffe15a 40%,#d9a400);color:#222;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.5)}
   @media (max-width:520px){ .rubCell{height:54px} .rubCell b{font-size:14px} .ltN{font-size:12px} .ltHead b{font-size:21px} }
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+  .confetti i{position:absolute;top:-14px;width:9px;height:14px;border-radius:2px;animation:confFall linear forwards}
+  @keyframes confFall{to{transform:translate(var(--dx),105vh) rotate(720deg);opacity:.9}}
+  .lbBox{background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:8px 10px;margin:8px 0;font-size:13px}
+  .lbT{font-weight:800;color:#9a6a00;margin-bottom:4px}
+  .lbR{display:grid;grid-template-columns:22px 1fr auto auto;gap:8px;align-items:center;padding:3px 0;border-top:1px solid rgba(0,0,0,.08)}
+  .lbR.me{color:#0a7a3a}
+  .lbW{display:flex;flex-direction:column;min-width:0}
+  .lbN{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+  .lbK{font-size:11px;opacity:.8;white-space:nowrap}
+  .lbM{font-weight:800;white-space:nowrap}
+  .lbS{font-size:11px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -223,6 +235,7 @@
   <div class="pill"><span id="hTime">Tag 1 · 08:00</span><span id="hDist"></span></div>
   <div class="pill" id="hX" style="display:none"><span id="hStars"></span><span id="hPro"></span><span id="hCar"></span></div>
   <div class="pill" id="hMp" style="display:none"></div>
+  <div class="pill" id="hDly" style="display:none;cursor:pointer;pointer-events:auto" role="button" aria-label="Tagesaufgaben"></div>
   <div class="pill" id="hGoal" style="display:none"><span id="hArrow">⬆</span><span id="hGoalT"></span></div>
   <div style="display:flex;gap:6px"><button id="menuBtn" aria-label="Menü">📋</button><button id="chatBtn" aria-label="Mitspieler und Chat">💬</button><button id="smkBtn" aria-label="Rauchen" style="display:none">🚬</button></div>
 </div>
@@ -359,6 +372,7 @@ const POIS=[
   {id:'atm3',icon:'🏧',name:'Geldautomat',...atmSpot(3)},
   {id:'dosen',icon:'🎨',name:'Dosen-Dieter (Graffiti-Laden)',door:1,...topOf(0,1)},
   {id:'tabak',icon:'🚬',name:'Tabak & Lotto „Blauer Dunst“',door:1,...topOf(8,2)},
+  {id:'spaeti',icon:'🏪',name:'Späti „Zur Ecke“',door:1,...topOf(7,5)},
   {id:'hall',icon:'🧱',name:'Hall of Fame',x:67,y:53.9},
   {id:'tcar0',icon:'🚆',name:'S-Bahn Wagen 1',x:112.6,y:89.35,hidden:()=>trainOff()!==0},
   {id:'tcar1',icon:'🚆',name:'S-Bahn Wagen 2',x:115.55,y:89.35,hidden:()=>trainOff()!==0},
@@ -417,7 +431,7 @@ function load(){ try{ const r=localStorage.getItem(SAVE_KEY); if(!r) return null
     if(typeof n.wanted!=='number'||!isFinite(n.wanted)) n.wanted=0;
     if(isSolid(n.x,n.y)){n.x=START.x;n.y=START.y;} n.inB=tileAt(Math.floor(n.x),Math.floor(n.y))===INDOOR;
     for(const k of ['mehl','mehlT','downT','mehlN','trk']) if(typeof n[k]!=='number'||!isFinite(n[k])) n[k]=0; if(!TRACKS[n.trk]) n.trk=0;
-    if(!n.gm||typeof n.gm!=='object'||typeof n.gm.wait!=='number') n.gm=newState().gm; if(!n.egg||typeof n.egg!=='object') n.egg={}; if(!Array.isArray(n.bins)) n.bins=[]; n.skin=(n.skin|0)%8; if(n.skin<0) n.skin=0; return n; }catch(e){ return null; } }
+    if(!n.gm||typeof n.gm!=='object'||typeof n.gm.wait!=='number') n.gm=newState().gm; if(!n.egg||typeof n.egg!=='object') n.egg={}; if(!Array.isArray(n.bins)) n.bins=[]; n.skin=(n.skin|0); if(n.skin<0||n.skin>11) n.skin=0; return n; }catch(e){ return null; } }
 function wipe(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
 
 /* ===================== Ton ===================== */
@@ -555,7 +569,7 @@ function banner(a,b){ const el=$('banner'); el.innerHTML=''; el.appendChild(docu
 /* ===================== Spiel-Logik ===================== */
 function earn(c,why){ S.money+=c; S.st.earned+=c; sfx('cash'); toast('+'+fmt(c)+(why?' · '+why:'')); }
 function pay(c){ if(S.money<c){ toast('Zu wenig Geld – dir fehlen '+fmt(c-S.money)); return false; } S.money-=c; return true; }
-function eat(h){ S.hunger=clamp(S.hunger+h,0,100); }
+function eat(h){ S.hunger=clamp(S.hunger+h,0,100); if(h>0&&S.ms) S.ms.ate=1; }
 function takeBottles(n){ n=Math.min(n,S.bagN); if(n<=0) return; const c=Math.round(S.bagC*n/S.bagN); S.bagN-=n; S.bagC-=c; if(S.bagN===0) S.bagC=0; }
 function addMin(m){ S.min+=m; while(S.min>=1440){ S.min-=1440; S.day++; } }
 function unlock(id){ if(S.ach[id]) return false; S.ach[id]=1; toast('🏆 Erfolg: '+ACH[id].n); return true; }
@@ -663,7 +677,7 @@ function exitCar(){ const c=drv; if(!c) return; drv=null; c.v=c.vx=c.vy=0; c.idl
   for(const t of tries) if(freeP(c.x+t[0],c.y+t[1])){ S.x=c.x+t[0]; S.y=c.y+t[1]; walkT=0; updateHud(); return; }
   S.x=c.x; S.y=c.y; walkT=0; updateHud(); }
 function removeCar(c){ const i=vcars.indexOf(c); if(i>=0) vcars.splice(i,1); if(drv===c) drv=null; spawnParked(true); }
-function damage(c,d){ c.hp-=d; sfx('crash');
+function damage(c,d){ c.hp-=d; if(c.own&&c.hp<12) c.hp=12; sfx('crash');
   if(c.hp<=0){ c.hp=0; c.wreck=18; if(c===drv){ exitCar(); toast('💥 Motor im Eimer! Die Karre ist Schrott.'); } } }
 function carOk(x,y,a){ if(!freeC(x,y)) return false; const fx=Math.cos(a)*.42, fy=Math.sin(a)*.42; return !isSolid(x+fx,y+fy)&&!isSolid(x-fx,y-fy); }
 function drive(dt,mx,my,sway){
@@ -874,7 +888,7 @@ const HANDLERS={
       {label:'Im eigenen Bett schlafen',fn:()=>sleep('Dein Zimmer',100,0,false)},BYE]);
     dialog('🏠 WG-Büro „Zimmer frei“','„Ein Zimmer in Plattenhausen, 11. Stock, Aufzug meistens. Kaution und erste Miete: 250,00 € – dann gehört der Schlüssel dir.“\n\nDu hast: '+fmt(S.money),[
       {label:'Zimmer nehmen – 250,00 €',disabled:S.money<25000,fn:()=>{ if(pay(25000)){ S.won=true;
-        info('🎉 Geschafft!','Bong dreht den Schlüssel um. Eine Tür. SEINE Tür.\n\nVon der Parkbank ins eigene Zimmer in '+S.day+' Tagen, mit '+S.st.pfand+' Stück Pfand, '+S.st.cars+' „geliehenen“ Autos und '+S.st.nights+' Nächten unterwegs.\n\nDu kannst weiterspielen – die Stadt gehört dir.'); } }},
+        info('🎉 Geschafft!','Bong dreht den Schlüssel um. Eine Tür. SEINE Tür.\n\nVon der Parkbank ins eigene Zimmer in '+S.day+' Tagen, mit '+S.st.pfand+' Stück Pfand, '+S.st.cars+' „geliehenen“ Autos und '+S.st.nights+' Nächten unterwegs.\n\nUnd jetzt? Nächstes Ziel: eine eigene Wohnung – 1.500 € im WG-Büro.'); } }},
       BYE]); }
 };
 function bench(p){ dialog('🪑 Parkbank','Hart, kalt, aber frei. Hier schläft man schlecht – und wird öfter mal beklaut.',[
@@ -883,7 +897,7 @@ function bench(p){ dialog('🪑 Parkbank','Hart, kalt, aber frei. Hier schläft 
 function openMenu(){
   const qn=(s,a,b,c)=>s===0?null:(s===3?'✅ ':'▶️ ')+(s===3?c:s===2?b:a);
   const L=[];
-  L.push((S.won?'✅':'🎯')+' Hauptziel: Eigenes Zimmer im WG-Büro (Plattenhausen) – 250,00 €');
+  L.push(...tierLines()); { const D=dly(); if(D.tasks&&D.last===realDay()) L.push('📅 Tagesaufgaben (🔥 Serie: '+(D.streak||0)+'):\n'+dlyTasksText()); }
   L.push('🗺️ Stadtteile entdeckt: '+Object.keys(S.visited).length+' / 6');
   if(S.bank>0) L.push('🏦 Konto bei der Pfandbank: '+fmt(S.bank)+' (1 % Zinsen pro Tag)');
   { const fg=featGoal(); if(fg) L.push('📌 '+fg); const gl=gmLine(); if(gl) L.push(gl); L.push('📋 Aufträge erledigt: '+(S.st.gm||0)); if((S.sucht||0)>=1) L.push('🚬 Sucht: '+Math.round(S.sucht)+' %'+(schmacht()?' – Schmacht!':'')); }
@@ -912,6 +926,9 @@ function openMenu(){
   if(S.gm.act) o.push({label:'❌ Aktuellen Auftrag abbrechen',fn:gmAbort});
   o.push({label:'👥 Mehrspieler: Lobby & Chat (Taste T)',fn:()=>chatDialog()});
   o.push({label:'🎓 Tutorial nochmal ansehen',fn:()=>{ S.tut=0; tutS=null; }});
+  if(S.car&&!drv) o.push({label:'🚗 Rostlaube herholen',fn:carCall});
+  if(anySpecial()) o.push({label:'👕 Kleiderschrank',fn:()=>wardrobe(openMenu)});
+  o.push({label:'📅 Tagesbonus & Tagesaufgaben',fn:()=>setTimeout(dlyDialog,0)});
   o.push({label:'👕 Hoodie-Farbe wechseln',fn:()=>{ S.skin=((S.skin||0)+1)%8; toast('Neue Farbe – so sehen dich auch die anderen.'); }});
   o.push({label:S.gfx===1?'🎨 Grafik: sparsam – auf schön stellen':'🎨 Grafik: schön – bei Ruckeln auf sparsam stellen',fn:()=>{ S.gfx=S.gfx===1?0:1; S.ga=1; resize(); openMenu(); }});
   o.push({label:S.mute?'🔇 Ton ist aus – einschalten':'🔊 Ton ist an – ausschalten',fn:()=>{ S.mute=!S.mute; openMenu(); }});
@@ -956,7 +973,7 @@ function update(dt){
   // Pfand (nur zu Fuß)
   if(!drv) for(let i=bottles.length-1;i>=0;i--){ const b=bottles[i]; if(Math.abs(b.x-S.x)<.55&&Math.abs(b.y-S.y)<.55){
       if(S.bagN>=S.cap){ if(fullT<gt){ toast('Beutel voll! Ab zum Pfandautomaten 🛒'); fullT=gt+4; } break; }
-      S.bagN++; S.bagC+=BT[b.t].c; bottles.splice(i,1); sfx('pick'); } }
+      S.bagN++; S.bagC+=BT[b.t].c; S.st.bot=(S.st.bot||0)+1; bottles.splice(i,1); sfx('pick'); } }
   spawnCd-=dt; if(spawnCd<=0){ spawnCd=1.2; if(bottles.length<BOTTLE_TARGET) spawnBottle(true); }
   // Jobs
   const j=S.job;
@@ -986,7 +1003,7 @@ function update(dt){
   // abgestellte Autos
   for(let i=vcars.length-1;i>=0;i--){ const v=vcars[i]; if(v===drv) continue;
     if(v.wreck>0){ v.wreck-=dt; if(v.wreck<=0){ vcars.splice(i,1); spawnParked(true); } continue; }
-    if(tileAt(Math.floor(v.x),Math.floor(v.y))===ROAD){ v.idle+=dt; if(v.idle>30){ if(Math.hypot(v.x-S.x,v.y-S.y)<10) toast('🚛 Falschparker abgeschleppt.'); vcars.splice(i,1); spawnParked(true); } } }
+    if(!v.own&&tileAt(Math.floor(v.x),Math.floor(v.y))===ROAD){ v.idle+=dt; if(v.idle>30){ if(Math.hypot(v.x-S.x,v.y-S.y)<10) toast('🚛 Falschparker abgeschleppt.'); vcars.splice(i,1); spawnParked(true); } } }
   // Polizei
   starCd-=dt; ramCd-=dt; duiCd-=dt;
   if(drv&&S.pro>=.5&&S.wanted===0&&duiCd<=0&&Math.hypot(drv.vx,drv.vy)>1.5&&copNear(5)){ duiCd=6; addWanted(1,'Alkoholkontrolle! Schlangenlinien gesehen.'); }
@@ -1916,7 +1933,7 @@ function gmTick(dt){ const G=S.gm; if(!G.giver&&!G.act){ G.wait-=dt; if(G.wait<=
   else if((a.ty==='taxi'||a.ty==='escape')&&!a.st&&drv&&G.giver&&near(G.giver.x,G.giver.y,2.9)&&slow){ a.st=1; G.giver=null; gmSync(); if(a.ty==='escape') addWanted(2,a.nm+' springt rein: „FAHR! Die suchen mich!“'); else toast('🚕 '+a.nm+' steigt ein: „Einmal quer durch die Stadt, bitte.“'); }
   else if((a.ty==='taxi'||a.ty==='escape')&&a.st===1&&drv&&near(p.tx,p.ty,2.9)&&slow) gmDone(gmPay(a),a.ty==='escape'?a.nm+' springt raus und verschwindet in einem Hauseingang. Im Handschuhfach liegt ein Umschlag.':a.nm+' steigt aus: „Stimmt so.“');
   else if(a.ty==='find'&&!a.st&&near(p.tx,p.ty,1.3)){ a.st=1; gmSync(); toast('🔎 Gefunden: '+p.it+'! Zurück zu '+a.nm+'.'); }
-  else if(a.ty==='car'&&drv&&drv.type===p.ct&&G.giver&&near(G.giver.x,G.giver.y,2.9)&&slow){ const c=drv; exitCar(); removeCar(c); gmDone(gmPay(a),a.nm+' streichelt die Motorhaube. „Woher der kommt, will ich gar nicht wissen.“'); }
+  else if(a.ty==='car'&&drv&&!drv.own&&drv.type===p.ct&&G.giver&&near(G.giver.x,G.giver.y,2.9)&&slow){ const c=drv; exitCar(); removeCar(c); gmDone(gmPay(a),a.nm+' streichelt die Motorhaube. „Woher der kommt, will ich gar nicht wissen.“'); }
   else if(a.ty==='vinyl'&&S.inB&&near(POI.dj.x,POI.dj.y,1.9)) gmDone(gmPay(a),'DJ Presslufthammer legt die Platte sofort auf. Die Tanzfläche dreht durch.'); }
 HANDLERS.giver=function(p){ const g=S.gm.giver, a=S.gm.act; if(!g) return;
   if(a){ const q=a.par;
@@ -1965,7 +1982,7 @@ function goalInfo(){ const t=questTarget(), g=gmLine(), j=S.job; let txt;
   else if(S.energy<22&&!(S.mehlT>0)) txt='Du bist platt – such dir einen Schlafplatz';
   else if(t===POI.moewe) txt='Möwe im Hafen finden'; else if(t===POI.ali) txt='Zange zu Ali bringen'; else if(t===dog) txt='Dackel Wurst im Stadtpark finden'; else if(t===POI.erna) txt='Wurst zu Oma Erna bringen';
   else if(t===POI.kalle) txt='Brötchen zu Tauben-Kalle'; else if(t===POI.rudi) txt='Pfand zu Alu-Rudi bringen'; else if(t===POI.super1||t===POI.super2) txt=S.q.kalle===1&&S.brot<3?'Brötchen im Billig-Kauf einpacken':'Pfand im Billig-Kauf abgeben';
-  else if(t===POI.giver) txt=S.gm.giver.nm+' hat einen Auftrag'; else txt=S.won?'Die Stadt gehört dir':'Pfand sammeln, Aufträge machen, 250 € fürs Zimmer';
+  else if(t===POI.giver&&tierTarget()){ txt=tierGoal(); return {txt,t:tierTarget()}; } else if(t===POI.giver) txt=S.gm.giver.nm+' hat einen Auftrag'; else { txt=tierGoal(); if(!t) return {txt,t:tierTarget()}; }
   return {txt,t}; }
 function goalHud(){ mpHud(); const el=$('hGoal'); if(!running||S.inB){ el.style.display='none'; return; } const g=goalInfo(), ar=$('hArrow'); el.style.display='flex';
   if(g.t){ const d=Math.hypot(g.t.x-S.x,g.t.y-S.y), a=Math.atan2(g.t.y-S.y,g.t.x-S.x)-camA+Math.PI/2; ar.style.display='inline-block'; ar.style.transform='rotate('+a.toFixed(2)+'rad)'; $('hGoalT').textContent=g.txt+' · '+Math.round(d*3.6/10)*10+' m'; }
@@ -2028,7 +2045,7 @@ function mpPeers(list){ const seen=new Set(), now=Date.now(); let mx=0;
     const x=num(pos[0],-8,W+8), y=num(pos[1],-8,H+8), h=num(pos[2],-7,7); if(x===null||y===null||h===null) continue; seen.add(pr.peer);
     const nick=typeof q.n==='string'?(q.n.replace(/[\u0000-\u001f]/g,'').slice(0,16)||'Jemand'):'Jemand';
     let o=MP.peers.get(pr.peer); if(!o){ o={x,y,h,w:0,mt:0,ms:''}; MP.peers.set(pr.peer,o); if(running) toast('👋 '+nick+' ist in der Stadt'); }
-    o.tx=x; o.ty=y; o.th=h; o.in=!!q.b; o.rm=q.r==='c'?'c':''; o.dn=!!q.d; o.sm=Math.max(0,Math.min(4,(q.sm|0))); o.k=(num(q.k,0,7)||0)|0; o.nick=nick; o.big=!!q.g;
+    o.tx=x; o.ty=y; o.th=h; o.in=!!q.b; o.rm=q.r==='c'?'c':''; o.dn=!!q.d; o.sm=Math.max(0,Math.min(4,(q.sm|0))); o.k=(num(q.k,0,11)||0)|0; o.nick=nick; o.lb=Array.isArray(q.lb)&&q.lb.length===3?[Math.max(0,Math.min(5,q.lb[0]|0)),Math.max(0,Math.min(1e11,Math.round(+q.lb[1]||0))),Math.max(0,Math.min(9999,q.lb[2]|0))]:null; o.big=!!q.g;
     const c=Array.isArray(q.c)?q.c:null; o.car=c&&num(c[0],0,4)!==null&&num(c[1],-7,7)!==null?{t:num(c[0],0,4)|0,a:num(c[1],-7,7),col:typeof c[2]==='string'&&/^#[0-9a-fA-F]{6}$/.test(c[2])?c[2]:'#888888'}:null;
     mvPeer(q,pr.peer);
     const tm=typeof q.tm==='number'&&isFinite(q.tm)&&q.tm>=1440&&q.tm<1440*10000?Math.floor(q.tm):0; if(tm>mx) mx=tm;
@@ -2036,7 +2053,7 @@ function mpPeers(list){ const seen=new Set(), now=Date.now(); let mx=0;
   for(const k of Array.from(MP.peers.keys())) if(!seen.has(k)){ const o=MP.peers.get(k); MP.peers.delete(k); if(running&&o) toast('👋 '+o.nick+' ist weg'); }
   // gemeinsame Uhr: alle richten sich nach dem, der am weitesten ist
   if(S){ const mine=S.day*1440+S.min; if(mx>mine){ S.day=Math.max(1,Math.floor(mx/1440)); S.min=mx%1440; if(mx-mine>45&&running) toast('🕒 Lobby-Uhr: Tag '+S.day+', '+clock()+' Uhr'); } } }
-function mpMine(){ return {mv:[S.mv===undefined?70:S.mv,S.mvN||0],p:[+S.x.toFixed(2),+S.y.toFixed(2),+heading.toFixed(2)],c:drv?[drv.type,+drv.a.toFixed(2),drv.col]:null,b:S.inB?1:0,r:S.inB&&S.room==='casino'?'c':'',d:danceT>0?1:0,sm:smokeCode(),k:S.skin||0,n:mpNick(),g:S.big?1:0,m:MP.msg,tm:S.day*1440+Math.floor(S.min)}; }
+function mpMine(){ return {mv:[S.mv===undefined?70:S.mv,S.mvN||0],p:[+S.x.toFixed(2),+S.y.toFixed(2),+heading.toFixed(2)],c:drv?[drv.type,+drv.a.toFixed(2),drv.col]:null,b:S.inB?1:0,r:S.inB&&S.room==='casino'?'c':'',d:danceT>0?1:0,sm:smokeCode(),lb:lbMine(),k:S.skin||0,n:mpNick(),g:S.big?1:0,m:MP.msg,tm:S.day*1440+Math.floor(S.min)}; }
 function mpTick(t){ if(NET.state!=='on'||!running||!S) return; if(t-MP.sendT<(NET.kind==='mq'?140:95)) return; MP.sendT=t; if(MP.msg&&Date.now()-MP.msg[1]>9000) MP.msg=null; const me=mpMine();
   try{ if(NET.kind==='room'){ const q=NET.lobby.presence(me); if(q&&q.catch) q.catch(()=>{}); }
     else if(NET.kind==='mq'){ const now=Date.now(), msg=JSON.stringify({i:NET.mqId,p:me}); let ok=0; (NET.mqCl||[]).forEach(c=>{ if(c.ok){ c.pub(NET.mqTopic,msg); ok++; } }); if(ok) NET.mqT=now; else if(now-NET.mqT>20000) return lobbyOff('Verbindung zur Lobby verloren.');
@@ -2056,7 +2073,7 @@ function chatDialog(msg){ if(!running) return; const on=NET.state==='on', con=NE
   const mk=(ph,val,fn,lab,max)=>{ const r=document.createElement('div'); r.className='lkrow'; const i=document.createElement('input'); i.className='lkin'; i.type='text'; i.maxLength=max||80; i.placeholder=ph; i.value=val; i.autocomplete='off'; i.setAttribute('aria-label',ph); const b=btn(lab,()=>fn(i.value),'lkadd'); b.setAttribute('aria-label',ph);
     i.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); fn(i.value); } else if(e.key==='Escape'){ e.preventDefault(); closeDlg(); } e.stopPropagation(); }); r.appendChild(i); r.appendChild(b); box.appendChild(r); return i; };
   let focus=null;
-  if(on){ const c=document.createElement('div'); c.className='lcode'; c.textContent=NET.code; box.appendChild(c);
+  if(on){ const c=document.createElement('div'); c.className='lcode'; c.textContent=NET.code; box.appendChild(c); box.appendChild(lbBox());
     const r=document.createElement('div'); r.className='lkrow'; r.appendChild(btn('📋 Code kopieren',()=>{ try{ navigator.clipboard.writeText(NET.code).then(()=>toast('Code kopiert: '+NET.code),()=>toast('Code: '+NET.code)); }catch(e){ toast('Code: '+NET.code); } })); r.appendChild(btn('🚪 Lobby verlassen',()=>lobbyOff())); box.appendChild(r);
     const em=document.createElement('div'); em.className='lkrow lkw'; ['👋','😂','👍','🍺','Komm her!','Polizei!'].forEach(e=>em.appendChild(btn(e,()=>{ mpSay(e); closeDlg(); },'lkx lkf'))); box.appendChild(em);
     focus=mk('Nachricht schreiben …','',v=>{ if(String(v).trim()){ mpSay(v); closeDlg(); } },'➤'); }
@@ -3104,6 +3121,185 @@ function lottoRender(){ const d=lottoDrawDay(); document.querySelectorAll('#ltG 
 ACH.kette={n:'Kettenraucher',d:'50 Kippen geraucht'}; ACH.lotto={n:'Lottokönig',d:'Mit mindestens vier Richtigen im Lotto gewonnen'};
 if($('smkBtn')) $('smkBtn').addEventListener('click',()=>smokeMenu());
 FEAT.push({tick(dt){ nicTick(); smokeTick(dt||0); lottoTick(); }});
+/* ===================== Dranbleiben: Zielkette, Ränge, Tagesbonus, Tagesaufgaben, Einstieg, Bestenliste ===================== */
+const TIERS=[
+  {id:'zimmer',n:'Eigenes WG-Zimmer',price:25000,rank:'WG-Bewohner',where:'wg',wo:'WG-Büro, Plattenhausen'},
+  {id:'wohnung',n:'Eigene Wohnung',price:150000,rank:'Mieter mit Balkon',where:'wg',wo:'WG-Büro, Plattenhausen'},
+  {id:'auto',n:'Eigenes Auto „Rostlaube“',price:400000,rank:'Autobesitzer',where:'manni',wo:'Schrott-Manni'},
+  {id:'spaeti',n:'Eigener Späti',price:1200000,rank:'Geschäftsmann',where:'spaeti',wo:'Späti „Zur Ecke“'},
+  {id:'club',n:'Den Bunker-Club kaufen',price:5000000,rank:'König von Bongstadt',where:'bunker',wo:'Techno-Bunker'}];
+function own(){ if(!S.own||typeof S.own!=='object') S.own={}; return S.own; }
+function tier(){ if(!S.won) return 0; const o=own(); let n=1; for(const id of ['wohnung','auto','spaeti','club']){ if(o[id]) n++; else break; } return n; }
+function rankName(n){ n=n===undefined?tier():n; return n?TIERS[n-1].rank:'Penner'; }
+function nextTier(){ return TIERS[tier()]||null; }
+function wealth(){ return Math.max(0,(S.money||0)+(S.bank||0)); }
+function tierGoal(){ const nt=nextTier(); if(!nt) return '👑 König von Bongstadt – Kassen leeren und genießen';
+  if(tier()===0) return S.money>=nt.price?'Ab ins WG-Büro – das Zimmer gehört gleich dir!':'Pfand sammeln, Aufträge machen, 250 € fürs Zimmer';
+  return S.money>=nt.price?'Jetzt holen: '+nt.n+' ('+nt.wo+')':'Nächstes Ziel: '+nt.n+' – '+fmtS(Math.min(S.money,nt.price))+' / '+fmtS(nt.price); }
+function tierTarget(){ const nt=nextTier(); return nt&&S.money>=nt.price?POI[nt.where]||null:null; }
+function tierLines(){ const n=tier(), L=['🏅 Rang: '+rankName(n)+(n<5?' · nächster: '+TIERS[n].rank:'')];
+  TIERS.forEach((t,i)=>L.push((i<n?'✅ ':i===n?'🎯 ':'🔒 ')+t.n+' – '+fmtS(t.price)+(i===n?' ('+t.wo+')':''))); return L; }
+function rankUp(n){ const nt=TIERS[n]; BQ.unshift(['🏅 Neuer Rang: '+rankName(n),nt?'Nächstes Ziel: '+nt.n+' – '+fmtS(nt.price):'Die Stadt gehört dir.',n>=5?'big':'win']); bqT=0; }
+function buyTier(id){ const i=TIERS.findIndex(t=>t.id===id), T=TIERS[i]; if(tier()!==i) return false; if(!pay(T.price)) return false; own()[id]=1; S.tierSeen=tier(); rankUp(tier()); save(); return true; }
+
+/* ---------- Banner nacheinander zeigen ---------- */
+const BQ=[]; let bqT=0;
+function bannerQ(a,b,party){ BQ.push([a,b,party]); }
+function bqTick(dt){ bqT-=dt; if(bqT>0||!BQ.length) return; const el=$('banner'); if(el&&+el.style.opacity>0.05) return; const [a,b,party]=BQ.shift(); banner(a,b); if(party){ confetti(); try{ casSfx(party==='big'?'big':'win'); }catch(e){} } bqT=3; }
+/* ---------- Konfetti ---------- */
+function confetti(){ try{ const box=document.createElement('div'); box.className='confetti'; const C=['#ffd23a','#ff4d6d','#3ad1ff','#7dff9c','#b388ff','#ff9f2e'];
+  for(let i=0;i<70;i++){ const s=document.createElement('i'); s.style.left=(Math.random()*100)+'%'; s.style.background=C[i%C.length]; s.style.animationDelay=(Math.random()*.5)+'s'; s.style.animationDuration=(1.8+Math.random()*1.4)+'s'; s.style.setProperty('--dx',(Math.random()*160-80)+'px'); s.style.transform='rotate('+Math.floor(Math.random()*360)+'deg)'; box.appendChild(s); }
+  document.body.appendChild(box); setTimeout(()=>box.remove(),3800); }catch(e){} }
+
+/* ---------- Wohnung (WG-Büro) ---------- */
+const wg0=HANDLERS.wg;
+HANDLERS.wg=function(p){ if(!S.won) return wg0.call(HANDLERS,p); const o=own(), day=S.day, opts=[];
+  opts.push({label:'🛏️ Im eigenen Bett schlafen',fn:()=>sleep(o.wohnung?'Deine Wohnung':'Dein Zimmer',100,0,false)});
+  if(o.wohnung){ opts.push({label:'🧊 Kühlschrank plündern (+50 satt, +10 Energie)'+(S.fridge===day?' – leer, morgen wieder voll':''),disabled:S.fridge===day,fn:()=>{ S.fridge=day; eat(50); S.energy=clamp(S.energy+10,0,100); toast('🧊 Reste von gestern. Schmeckt trotzdem.'); HANDLERS.wg(p); }});
+    opts.push({label:'👕 Kleiderschrank',fn:()=>wardrobe()}); }
+  else opts.push({label:'🏢 Eigene Wohnung mieten – '+fmtS(TIERS[1].price)+' (2 Zimmer, Balkon, Kühlschrank)',disabled:S.money<TIERS[1].price,fn:()=>{ if(buyTier('wohnung')) info('🏢 Deine Wohnung','Zwei Zimmer, ein Balkon mit Blick auf die Platte gegenüber. Ein Kühlschrank, der jeden Morgen wieder voll ist (frag nicht). Ein Kleiderschrank mit neuen Klamotten.\n\nNächstes Ziel: '+TIERS[2].n+' bei Schrott-Manni – '+fmtS(TIERS[2].price)+'.'); }});
+  opts.push({label:'Tschüss'});
+  dialog(o.wohnung?'🏢 Deine Wohnung':'🏠 Dein Zimmer',(o.wohnung?'Zwei Zimmer, Balkon, eigener Schlüssel. Hier wohnst du.':'Zwölf Quadratmeter, ein Fenster, ein Schlüssel. Deins.')+'\n\n🏅 Rang: '+rankName()+'\nGeld: '+fmt(S.money),opts); };
+const SPECIAL_SKINS=[
+  {k:8,n:'Gold-Hoodie',hood:'#f2c230',ph:'#fffbe0',has:()=>!!(S.unl&&S.unl.gold),how:'7 Tage am Stück spielen'},
+  {k:9,n:'Chef-Anzug',hood:'#3a1458',ph:'#ffd23a',has:()=>!!own().club,how:'Den Bunker-Club kaufen'},
+  {k:10,n:'Mint',hood:'#3ec9a7',ph:'#ffffff',has:()=>!!own().wohnung,how:'Eigene Wohnung'},
+  {k:11,n:'Bordeaux',hood:'#6d1230',ph:'#ffd23a',has:()=>!!own().wohnung,how:'Eigene Wohnung'}];
+SPECIAL_SKINS.forEach(s=>{ SKINS[s.k]=Object.assign({},BONG,{hood:s.hood,phones:s.ph}); });
+function wardrobe(back){ back=back||(()=>HANDLERS.wg(POI.wg)); const o=SPECIAL_SKINS.map(s=>({label:(s.has()?(S.skin===s.k?'✅ ':'👕 '):'🔒 ')+s.n+(s.has()?'':' – '+s.how),disabled:!s.has(),fn:()=>{ S.skin=s.k; toast('Neuer Look: '+s.n+'. Das sehen auch die anderen.'); wardrobe(back); }}));
+  o.push({label:'🧥 Normale Hoodie-Farben durchschalten',fn:()=>{ S.skin=S.skin>=8?0:((S.skin||0)+1)%8; wardrobe(back); }},{label:'↩ Zurück',fn:back});
+  dialog('👕 Kleiderschrank','Was ziehst du heute an?',o); }
+
+/* ---------- Eigenes Auto ---------- */
+const OWN_COL='#9b5b3a'; let carLive=false; // nur während einer Sitzung: war das Auto schon da?
+function ownCar(){ return vcars.find(v=>v.own)||null; }
+function carSpot(x,y){ return x>1&&y>1&&x<W-1&&y<H-1&&carOk(x,y,0)&&!vcars.some(v=>!v.own&&Math.hypot(v.x-x,v.y-y)<1.3); }
+function freeSpotNear(x,y,rMin,rMax){ for(let r=rMin;r<=rMax;r+=.5) for(let k=0;k<16;k++){ const a=k/16*Math.PI*2+r, px=x+Math.cos(a)*r, py=y+Math.sin(a)*r; if(carSpot(px,py)) return {x:px,y:py}; } return null; }
+function ownCarEnsure(){ if(!S.car||typeof S.car!=='object') return; let c=ownCar();
+  if(!c){ let p={x:S.car.x,y:S.car.y}; const lost=carLive; if(lost||!(p.x>0&&p.y>0&&carSpot(p.x,p.y))) p=freeSpotNear(POI.wg.x,POI.wg.y,1.5,8)||{x:POI.wg.x,y:POI.wg.y+1.5};
+    if(lost) setTimeout(()=>toast('🚗 Deine Rostlaube steht wieder vor deiner Wohnung. Mit Papieren holt man sie sofort zurück.'),1200);
+    c=mkCar(p.x,p.y,S.car.a||0,0,S.car.col||OWN_COL); c.own=true; c.stolen=true; c.hp=Math.max(40,S.car.hp||100); vcars.push(c); }
+  c.stolen=true; carLive=true; S.car.x=+c.x.toFixed(2); S.car.y=+c.y.toFixed(2); S.car.a=+c.a.toFixed(2); S.car.hp=Math.round(c.hp); S.car.col=c.col; }
+function carCall(){ if(!S.car) return; if(drv){ toast('Du sitzt doch schon drin.'); return; } if(S.inB){ toast('Hier unten passt keine Karre rein.'); return; } ownCarEnsure(); const c=ownCar(), p=freeSpotNear(S.x,S.y,1.2,4);
+  if(!c||!p){ toast('Hier ist kein Platz für die Rostlaube.'); return; } c.x=p.x; c.y=p.y; c.a=0; c.v=c.vx=c.vy=0; c.idle=0; c.hp=Math.max(c.hp,60); ownCarEnsure(); sfx('door'); toast('🚗 Die Rostlaube steht neben dir. Frag nicht, wie.'); }
+const manniR=HANDLERS.manni;
+HANDLERS.manni=function(p){ manniR(p); if(!dlgOpen) return; const o=dlgOpen.options, add=[]; let ch=false;
+  if(drv&&drv.own){ for(let i=0;i<o.length;i++) if(/verkaufen|Bestellung abliefern/.test(o[i].label)){ o[i]={label:'Die Rostlaube verkaufen? „Nie im Leben, die gehört jetzt zur Familie.“',disabled:true}; ch=true; } }
+  if(tier()===2) add.push({label:'🚗 Rostlaube kaufen – '+fmtS(TIERS[2].price)+' (legal, mit Papieren!)',disabled:S.money<TIERS[2].price,fn:()=>{ if(!buyTier('auto')) return; S.car={x:0,y:0,a:0,hp:100,col:OWN_COL}; const sp=freeSpotNear(POI.manni.x,POI.manni.y,1.5,8); if(sp){ S.car.x=sp.x; S.car.y=sp.y; } ownCarEnsure();
+    info('🚗 Deine Rostlaube','Manni klopft aufs Dach. Rost fällt ab. „Die läuft noch zwanzig Jahre. Mindestens fünf.“\n\nDas Auto gehört DIR: keine Polizei, wenn du einsteigst, und es geht nie ganz kaputt. Über 📋 Menü → „Rostlaube herholen“ steht es immer neben dir.\n\nNächstes Ziel: '+TIERS[3].n+' – '+fmtS(TIERS[3].price)+'.'); }});
+  else if(tier()<2) add.push({label:'🚗 Eigenes Auto – „Erst mal eine Wohnung, dann reden wir.“',disabled:true});
+  if(add.length||ch){ o.splice(o.length-1,0,...add); dialog(dlgOpen.title,dlgOpen.text,o); } };
+
+/* ---------- Späti und Club: Einnahmen ---------- */
+const INC={spaeti:40000,club:150000}, INC_SEC=720; // ein Spieltag = 12 Minuten echtes Spielen
+function incDays(id){ const l=(S.inc&&S.inc[id]); if(typeof l!=='number') return 0; return Math.min(3,Math.max(0,Math.floor(((S.pt||0)-l)/INC_SEC))); }
+function incDue(id){ return incDays(id)*INC[id]; }
+function incNext(id){ const l=(S.inc&&S.inc[id])||0, r=INC_SEC-(((S.pt||0)-l)%INC_SEC); return Math.max(1,Math.ceil(r/60)); }
+function incTake(id,why){ const n=incDays(id); if(!n) return; S.inc[id]=n>=3?(S.pt||0):S.inc[id]+n*INC_SEC; earn(n*INC[id],why); save(); }
+HANDLERS.spaeti=function(){ const o=own(), n=tier();
+  if(!o.spaeti){ const can=n===3;
+    return dialog('🏪 Späti „Zur Ecke“','Horst sitzt seit 31 Jahren hinter der Theke und will endlich an die Ostsee.\n\n„'+(can?'Du willst den Laden? 12.000 auf den Tisch, und er gehört dir. Läuft von allein, ich schwör.':n<3?'Verkaufen? Vielleicht. Aber nicht an einen, der noch kein Auto hat. Komm wieder, wenn du was darstellst.':'Den hast du doch schon!')+'“\n\nGeld: '+fmt(S.money),[
+      {label:'🏪 Späti kaufen – '+fmtS(TIERS[3].price),disabled:!can||S.money<TIERS[3].price,fn:()=>{ if(!buyTier('spaeti')) return; S.inc=S.inc||{}; S.inc.spaeti=S.pt||0; info('🏪 Dein Späti','Horst drückt dir den Schlüssel in die Hand und ist weg, bevor du Danke sagen kannst.\n\nDein Späti bringt alle 12 Minuten Spielzeit '+fmtS(INC.spaeti)+'. Hol das Geld hier an der Kasse ab (es sammelt sich bis zu dreimal).\n\nNächstes und letztes Ziel: '+TIERS[4].n+' – '+fmtS(TIERS[4].price)+'.'); }},
+      {label:'Tschüss'}]); }
+  const due=incDue('spaeti');
+  dialog('🏪 Dein Späti „Zur Ecke“','Deine Aushilfe Jenny guckt kurz hoch. „Chef! Läuft.“\n\nIn der Kasse: '+fmt(due)+' (nächste Einnahme in '+incNext('spaeti')+' Min. Spielzeit)'+'\nGeld: '+fmt(S.money),[
+    {label:'💶 Kasse leeren – '+fmt(due),disabled:!due,fn:()=>{ incTake('spaeti','Späti-Kasse'); HANDLERS.spaeti(); }},
+    {label:'🥤 Selbstbedienung: Mate und Brötchen (+30 satt, +15 Energie)'+(S.spSelf===S.day?' – heute schon':''),disabled:S.spSelf===S.day,fn:()=>{ S.spSelf=S.day; eat(30); S.energy=clamp(S.energy+15,0,100); HANDLERS.spaeti(); }},
+    {label:'Tschüss'}]); };
+const bunkerR=HANDLERS.bunker;
+HANDLERS.bunker=function(p){ const o=own();
+  if(o.club){ S.stampDay=S.day; const due=incDue('club');
+    return dialog('🔊 Dein Techno-Bunker','Sven reißt die Stahltür auf. „Chef! Rein mit dir.“\n\nClub-Kasse: '+fmt(due)+' (nächste Einnahme in '+incNext('club')+' Min. Spielzeit)',[
+      {label:'Runter in den Bunker',fn:enterBunker},{label:'💶 Club-Kasse leeren – '+fmt(due),disabled:!due,fn:()=>{ incTake('club','Club-Einnahmen'); HANDLERS.bunker(p); }},BYE]); }
+  bunkerR(p); if(!dlgOpen) return;
+  if(tier()===4){ const opts=dlgOpen.options; opts.splice(opts.length-1,0,{label:'💼 Den Club kaufen – '+fmtS(TIERS[4].price),disabled:S.money<TIERS[4].price,fn:()=>{ if(!buyTier('club')) return; S.inc=S.inc||{}; S.inc.club=S.pt||0; S.stampDay=S.day; unlock('koenig');
+      info('👑 König von Bongstadt','Der alte Besitzer zählt das Geld zweimal, nickt und verschwindet durch den Notausgang.\n\nDer Bunker gehört DIR. Sven nennt dich jetzt „Chef“, DJ Thomas spielt für dich, und die Club-Kasse bringt alle 12 Minuten Spielzeit '+fmtS(INC.club)+'.\n\nVon der Parkbank zum König von Bongstadt in '+S.day+' Tagen. Respekt.\n\nIm Kleiderschrank wartet jetzt der Chef-Anzug.'); }});
+    dialog(dlgOpen.title,dlgOpen.text,opts); } };
+ACH.koenig={n:'König von Bongstadt',d:'Den Bunker-Club gekauft'};
+
+/* ---------- Tagesbonus und Tagesaufgaben (echte Tage) ---------- */
+const DLY_AMT=[200,300,500,800,1200,1700,2500];
+function realDay(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function dayNo(s){ const a=String(s).split('-').map(Number); return Math.round(Date.UTC(a[0],a[1]-1,a[2])/864e5); }
+const TASKS=[
+  {k:'bot',t:[25,40],r:300,n:x=>x+' Flaschen oder Dosen aufsammeln'},
+  {k:'pfand',t:[20,30],r:300,n:x=>x+' Pfand im Billig-Kauf abgeben'},
+  {k:'gm',t:[1,2],r:600,n:x=>x+(x===1?' Auftrag':' Aufträge')+' erledigen (Leute mit ❗)'},
+  {k:'dance',t:[1,2],r:300,n:x=>x+(x===1?' Stunde':' Stunden')+' im Club tanzen'},
+  {k:'tags',t:[2,3],r:500,n:x=>x+' Tags für Dosen-Dieters Tag-Auftrag sprühen'},
+  {k:'cars',t:[1,2],r:400,n:x=>x+(x===1?' Auto':' Autos')+' knacken'},
+  {k:'earned',t:[2000,4000],r:400,n:x=>fmtS(x)+' verdienen'},
+  {k:'pz',t:[3,5],r:800,n:x=>x+' Pizzen pünktlich ausliefern',lock:()=>!LATE()},
+  {k:'mo',t:[1,1],r:1000,n:()=>'Ein Auto für Schrott-Manni besorgen',lock:()=>!LATE()}];
+function newTasks(d){ const r=mulberry(dayNo(d)*131+7), pool=TASKS.filter(t=>!(t.lock&&t.lock())), out=[];
+  while(out.length<3&&pool.length){ const i=Math.floor(r()*pool.length), T=pool.splice(i,1)[0], tgt0=T.t[0]+Math.floor(r()*(T.t[1]-T.t[0]+1)), tgt=T.k==='earned'?Math.round(tgt0*(1+tier()*2)/500)*500:tgt0;
+    out.push({k:T.k,tgt,base:S.st[T.k]||0,r:T.r,done:0}); }
+  return out; }
+function taskName(q){ const T=TASKS.find(t=>t.k===q.k); return T?T.n(q.tgt):q.k; }
+function taskProg(q){ return Math.max(0,Math.min(q.tgt,(S.st[q.k]||0)-q.base)); }
+function taskPay(q){ return q.r*(1+tier()); }
+function gift(c,why){ S.money+=c; sfx('cash'); toast('+'+fmt(c)+(why?' · '+why:'')); }
+const DKEY='bongs-leben-daily';
+function dly(){ if(!S.dly||typeof S.dly!=='object') S.dly={}; if(!S.dly.last&&!S.dly.fresh){ S.dly.fresh=1; try{ const r=JSON.parse(localStorage.getItem(DKEY)||'null'); if(r&&typeof r.last==='string'){ S.dly=r; if(Array.isArray(r.tasks)) r.tasks.forEach(q=>{ if(!q.done) q.base=S.st[q.k]||0; }); } }catch(e){} } return S.dly; }
+function dlySave(){ try{ localStorage.setItem(DKEY,JSON.stringify(S.dly)); }catch(e){} }
+function dlyRow(st){ if(st>7) return '🔥 Ab Tag 7 gibt es jeden Tag '+fmtS(DLY_AMT[6])+' – lass die Serie nicht abreißen!'; const i=st-1; return DLY_AMT.map((a,k)=>(k<i?'✅ ':k===i?'🎁 ':'⬜ ')+fmtS(a)+(k===6?' + 👑':'')).join(' · '); }
+function dlyTasksText(){ const D=dly(); if(!D.tasks) return ''; return D.tasks.map(q=>(q.done?'✅ ':'⬜ ')+taskName(q)+' ('+(q.k==='earned'?fmtS(taskProg(q))+' / '+fmtS(q.tgt):taskProg(q)+'/'+q.tgt)+') – '+fmtS(taskPay(q))).join('\n')+'\n'+(D.all?'✅':'🎁')+' Alle drei: '+fmtS(1000*(1+tier()))+' extra'; }
+function dlyCheck(){ if(!running||dlgOpen||mapOpen||casIsOpen()||grafIsOpen()||(S.tut>=0)) return; const t=realDay(), D=dly(); if(D.last===t) return;
+  const gap=D.last?dayNo(t)-dayNo(D.last):99; if(gap<0) return;
+  D.streak=gap===1?(D.streak||0)+1:1; D.best=Math.max(D.best||0,D.streak); D.last=t; D.all=0;
+  const i=Math.min(6,D.streak-1), amt=DLY_AMT[i]; gift(amt,'Tagesbonus'); D.tasks=newTasks(t); let extra='';
+  if(i===6){ S.unl=S.unl||{}; if(!S.unl.gold){ S.unl.gold=1; extra='\n\n👑 7 Tage am Stück! Der Gold-Hoodie gehört dir (📋 Menü → Kleiderschrank).'; } confetti(); }
+  save(); dlySave(); dialog('🎁 Tagesbonus – Tag '+D.streak+(D.streak>1?' in Folge':''),'Du bekommst '+fmt(amt)+'.\n\n'+dlyRow(D.streak)+extra+'\n\nKomm morgen wieder – wer einen Tag auslässt, fängt wieder bei Tag 1 an.\n\n📅 Heutige Aufgaben:\n'+dlyTasksText(),[{label:'Los geht’s'}]); }
+function dlyTick(){ const D=dly(); if(!D.tasks||D.last!==realDay()) return; let ch=false;
+  for(const q of D.tasks){ if(!q.done&&taskProg(q)>=q.tgt){ q.done=1; ch=true; gift(taskPay(q),'Tagesaufgabe'); bannerQ('✅ Tagesaufgabe geschafft',taskName(q),'win'); } }
+  if(!D.all&&D.tasks.every(q=>q.done)){ D.all=1; ch=true; gift(1000*(1+tier()),'Alle Tagesaufgaben'); bannerQ('🎉 Alle Tagesaufgaben geschafft!','Morgen gibt es neue.','win'); }
+  if(ch){ save(); dlySave(); } }
+function dlyDialog(){ if(!running||dlgOpen) return; const D=dly(); dialog('📅 Heute','🔥 Serie: '+(D.streak||0)+(D.streak===1?' Tag':' Tage')+' (Rekord: '+(D.best||0)+')\n'+(D.streak?dlyRow(D.streak)+'\n\n':'\n')+(D.tasks&&D.last===realDay()?dlyTasksText():'Neue Aufgaben gibt es, sobald das Tutorial durch ist.'),[{label:'Okay'}]); }
+function dlyHud(){ const el=$('hDly'); if(!el) return; const D=dly(); const on=running&&!S.inB&&D.tasks&&D.last===realDay();
+  if(!on){ if(el.style.display!=='none') el.style.display='none'; return; } const n=D.tasks.filter(q=>q.done).length, tx='📅 '+n+'/3'+(D.streak>1?' · 🔥 '+D.streak:'');
+  if(el.textContent!==tx) el.textContent=tx; if(el.style.display==='none') el.style.display=''; }
+
+/* ---------- Einstieg: Zwischenziele mit Jubel ---------- */
+const MS=[
+  {id:'essen',t:'🥪 Erstes Essen – Bong lebt!',s:'Hunger ist grün oben links. Immer im Blick behalten.',ok:()=>S.ms&&S.ms.ate},
+  {id:'geld5',t:'💶 Die ersten 5 € verdient!',s:'Weiter so – 250 € und das Zimmer gehört dir.',ok:()=>S.st.earned>=500},
+  {id:'auftrag',t:'📋 Erster Auftrag erledigt!',s:'Leute mit ❗ haben noch mehr Jobs.',ok:()=>S.st.gm>=1},
+  {id:'nacht',t:'🌙 Erste Nacht überlebt!',s:'Ein neuer Tag in Bongstadt.',ok:()=>S.st.nights>=1},
+  {id:'geld20',t:'💰 20 € verdient – läuft bei dir!',s:'Ab 300 € gibt es bessere Jobs (Pizza, Manni).',ok:()=>S.st.earned>=2000},
+  {id:'geld100',t:'🤑 100 € verdient!',s:'Das Zimmer rückt näher.',ok:()=>S.st.earned>=10000}];
+function msTick(){ if(!S.ms||typeof S.ms!=='object') S.ms={}; if(S.ms._init===undefined){ S.ms._init=1; if(S.st.earned>0||S.won||S.day>1){ MS.forEach(m=>{ if(m.ok()) S.ms[m.id]=1; }); S.ms.essen=1; } }
+  for(const m of MS){ if(!S.ms[m.id]&&m.ok()){ S.ms[m.id]=1; bannerQ(m.t,m.s,'win'); save(); } } }
+// Mehr Flaschen beim allerersten Start
+function startBottles(){ if(S.startB) return; S.startB=1; if(S.day!==1||S.st.earned>0) return; let n=0;
+  for(let k=0;k<200&&n<8;k++){ const a=Math.random()*Math.PI*2, r=3+Math.random()*8, x=S.x+Math.cos(a)*r, y=S.y+Math.sin(a)*r, t=tileAt(Math.floor(x),Math.floor(y));
+    if((t===WALK||t===PLAZA||t===GRASS)&&freeP(x,y)){ bottles.push({x,y,t:Math.random()<.5?0:2}); n++; } } }
+// Dosen-Dieter ruft an: erster kleiner Auftrag nach etwa einer Minute
+function dqTick(dt){ if(S.dq===undefined) S.dq=(S.st.gm>0||S.won)?-2:0; if(running&&!dlgOpen&&!mapOpen&&!casIsOpen()) S.pt=(S.pt||0)+Math.min(dt,.25);
+  if(S.dq===0&&S.pt>=60&&!(S.tut>=0&&S.tut<4)&&!S.inB&&!dlgOpen&&!mapOpen&&!S.inB&&!drv&&!casIsOpen()&&!grafIsOpen()){ if(S.st.gm>0){ S.dq=-2; return; }
+    tbSfx('snus'); dialog('📱 Dein Handy vibriert','Unbekannte Nummer. Du gehst ran.\n\n„Ey, bist du der mit den Flaschen? Hier ist Dieter, Dosen-Dieter. Ich brauch fünf leere Dosen oder Flaschen für ein Kunstprojekt. Bring sie mir vorbei – ich zahl dir 5 € und leg ’ne Sprühdose obendrauf.“',[
+      {label:'„Klar, bin unterwegs.“',fn:()=>{ S.dq=1; toast('📌 Sammel 5 Pfand und bring sie zu Dosen-Dieter.'); }},{label:'„Keine Zeit.“',fn:()=>{ S.dq=-1; }}]); } }
+const dosenR=HANDLERS.dosen;
+HANDLERS.dosen=function(){ dosenR(); if(!dlgOpen||S.dq!==1) return; const o=dlgOpen.options;
+  o.unshift({label:'🥫 5 leere Flaschen/Dosen abgeben – 5,00 € + rote Sprühdose'+(S.bagN<5?' (du hast '+S.bagN+')':''),disabled:S.bagN<5,fn:()=>{ takeBottles(5); S.dq=2; S.st.gm=(S.st.gm||0)+1; earn(500,'Dieters Kunstprojekt'); const cs=cans(); cs['#e02424']=Math.min(100,(cs['#e02424']||0)+100);
+    info('🎨 Dosen-Dieter','„Perfekt. Hier, die rote Dose – probier sie an der Hall of Fame im Stadtpark aus. Legal, versprochen.“\n\nTipp: Leute mit ❗ über dem Kopf haben noch mehr Aufträge.'); }});
+  dialog(dlgOpen.title,dlgOpen.text,o); };
+
+/* ---------- Bestenliste ---------- */
+function lbMine(){ return [tier(),Math.round(wealth()),dly().last===realDay()?(dly().streak||0):0]; }
+function lbRows(){ const R=[{n:mpNick()+' (du)',lb:lbMine(),me:1}]; for(const o of MP.peers.values()) if(o.lb) R.push({n:o.nick||'Jemand',lb:o.lb}); R.sort((a,b)=>b.lb[0]-a.lb[0]||b.lb[1]-a.lb[1]); return R; }
+function lbRender(el){ const R=lbRows(); el.innerHTML='<div class="lbT">🏆 Bestenliste</div>'+R.map((r,i)=>'<div class="lbR'+(r.me?' me':'')+'"><b>'+(i+1)+'.</b><span class="lbW"><span class="lbN"></span><span class="lbK">'+rankName(r.lb[0])+'</span></span><span class="lbM">'+fmtS(r.lb[1])+'</span><span class="lbS">🔥 '+r.lb[2]+'</span></div>').join('');
+  el.querySelectorAll('.lbN').forEach((s,i)=>s.textContent=R[i].n); }
+function lbBox(){ const el=document.createElement('div'); el.className='lbBox'; el.id='lbBox'; lbRender(el); return el; }
+let lbT=0;
+
+FEAT.push({ tick(dt){ dt=dt||0; startBottles(); msTick(); if(!dlgOpen) bqTick(dt); dqTick(dt); dlyCheck(); dlyTick(); if(S.car) ownCarEnsure();
+    if(S.tierSeen===undefined) S.tierSeen=tier(); else if(tier()>S.tierSeen){ S.tierSeen=tier(); rankUp(S.tierSeen); }
+    dlyHud();  },
+  target(){ if(S.dq===1&&S.bagN>=5) return POI.dosen; return null; },
+  goal(){ if(S.dq===1) return S.bagN>=5?'5 Pfand zu Dosen-Dieter bringen (5 €)':'Sammel 5 Pfand für Dosen-Dieter ('+S.bagN+'/5)'; return ''; } });
+if($('hDly')) $('hDly').addEventListener('click',()=>dlyDialog());
+setInterval(()=>{ const lb=document.getElementById('lbBox'); if(lb&&S) lbRender(lb); },1000);
+function anySpecial(){ return SPECIAL_SKINS.some(s=>s.has()); }
 
 function questTarget(){ const j=S.job;
   if(S.wanted>0&&drv) return POI.manni;
@@ -3163,7 +3359,7 @@ function startGame(fresh){ initAudio(); const l=fresh?null:load(); S=l||newState
 })();
 window.__game={get S(){return S},POIS,POI,HANDLERS,CT,update,render,chooseOption,openMenu,get dlg(){return dlgOpen},startGame,isSolid,tileAt,
   get bottles(){return bottles},get vcars(){return vcars},get cars(){return cars},get chasers(){return chasers},get drv(){return drv},
-  enterCar,exitCar,addWanted,snowSleep,drink,fourPromille,busted,snowing,snowOn,freeC,R3,get glOK(){return glOK},get heading(){return heading},get camA(){return camA},set camA(x){camA=x},get camP(){return camP},get camZ(){return camZ},gmSpawn,gmTick,gmTarget,gmDone,mpPeers,get MP(){return MP},get NET(){return NET},get Q(){return Q},enterCasino,freeP,tb,doSmoke,smokeMenu,schmacht,nicDrain,nowAbs,SMK,smokeCode,RUBS,rubDeal,rubWinOf,lottoNums,lottoDue,lottoCheck,lottoDrawDay,LOTTO_PAY,LOTTO_PRICE,tabakMain,casPending,thOrder,thSkip,CU,leaveCasino,inCasino,casOpen,casClose,get CAS(){return CAS},get ROU(){return ROU},get SL(){return SL},get BJR(){return BJR},rouWin,rouPayout,rouSpin,rouBet,slotSpin,slotPay,STRIP,REELPAY,bjV,bjDeal,bjHit,bjStand,bjDouble,bjSplit,bjShoe,WHEEL,CK,musVol,mvSet,get tutS(){return tutS},pzState,pzStart,pzOn,moNew,moCar,flohFind,flohOpen,LATE,get vcars2(){return vcars},krisTake,tagList,tgState,tgOn,tgStart,polOn,polDown,polState,slotWin,slotSym,bjVal,bjCard,get BJ(){return BJ},rCol,cas,grafOpen,grafClose,grafSurf,trainOff,cans,get GP(){return GP},GUARD,sprayAt,goJail,jailDialog,arrestEnd,bankMove,bankTick,atmSpot,get TK(){return TK},thomasOn,curCtr,curTrk,THOMAS_URL,frState,frStart,frOn,STUNTS,mwState,mwStart,mwOn,featGoal,featTarget,SHOPS,doorSpot,save,get CU(){return CU},mp3List,mp3Add,embedOf,cuPick,customTick,get MP3S(){return MP3S},qSet,get drawnCh(){return drawnCh},get DPR(){return DPR},get R3(){return R3},lobbyStart,lobbyOff,genCode,mpMine,mpSay,chatDialog,eggKey,bigHeads,BINS,GNOME,GOLD,DUCK,UFO,tunnelWrap,goalInfo,get HEADK(){return HEADK},mtnH,camBlocked,technoTest,TRACKS,enterBunker,leaveBunker,mehlLine,addLink,getLinks,linkDialog,BK,openMap,closeMap,get mapOpen(){return mapOpen},set heading(x){heading=x},setKeys(o){ for(const k in keys) keys[k]=false; Object.assign(keys,o); }};
+  enterCar,exitCar,addWanted,snowSleep,drink,fourPromille,busted,snowing,snowOn,freeC,R3,get glOK(){return glOK},get heading(){return heading},get camA(){return camA},set camA(x){camA=x},get camP(){return camP},get camZ(){return camZ},gmSpawn,gmTick,gmTarget,gmDone,mpPeers,get MP(){return MP},get NET(){return NET},get Q(){return Q},enterCasino,freeP,damage,botNear:r=>bottles.filter(o=>Math.hypot(o.x-S.x,o.y-S.y)<r).length,tier,rankName,nextTier,tierGoal,TIERS,own,buyTier,ownCar,ownCarEnsure,carCall,incDue,INC,dly,dlyCheck,dlyTick,dlyDialog,realDay,dayNo,newTasks,taskProg,MS,lbRows,lbMine,wardrobe,SPECIAL_SKINS,startBottles,tb,doSmoke,smokeMenu,schmacht,nicDrain,nowAbs,SMK,smokeCode,RUBS,rubDeal,rubWinOf,lottoNums,lottoDue,lottoCheck,lottoDrawDay,LOTTO_PAY,LOTTO_PRICE,tabakMain,casPending,thOrder,thSkip,CU,leaveCasino,inCasino,casOpen,casClose,get CAS(){return CAS},get ROU(){return ROU},get SL(){return SL},get BJR(){return BJR},rouWin,rouPayout,rouSpin,rouBet,slotSpin,slotPay,STRIP,REELPAY,bjV,bjDeal,bjHit,bjStand,bjDouble,bjSplit,bjShoe,WHEEL,CK,musVol,mvSet,get tutS(){return tutS},pzState,pzStart,pzOn,moNew,moCar,flohFind,flohOpen,LATE,get vcars2(){return vcars},krisTake,tagList,tgState,tgOn,tgStart,polOn,polDown,polState,slotWin,slotSym,bjVal,bjCard,get BJ(){return BJ},rCol,cas,grafOpen,grafClose,grafSurf,trainOff,cans,get GP(){return GP},GUARD,sprayAt,goJail,jailDialog,arrestEnd,bankMove,bankTick,atmSpot,get TK(){return TK},thomasOn,curCtr,curTrk,THOMAS_URL,frState,frStart,frOn,STUNTS,mwState,mwStart,mwOn,featGoal,featTarget,SHOPS,doorSpot,save,get CU(){return CU},mp3List,mp3Add,embedOf,cuPick,customTick,get MP3S(){return MP3S},qSet,get drawnCh(){return drawnCh},get DPR(){return DPR},get R3(){return R3},lobbyStart,lobbyOff,genCode,mpMine,mpSay,chatDialog,eggKey,bigHeads,BINS,GNOME,GOLD,DUCK,UFO,tunnelWrap,goalInfo,get HEADK(){return HEADK},mtnH,camBlocked,technoTest,TRACKS,enterBunker,leaveBunker,mehlLine,addLink,getLinks,linkDialog,BK,openMap,closeMap,get mapOpen(){return mapOpen},set heading(x){heading=x},setKeys(o){ for(const k in keys) keys[k]=false; Object.assign(keys,o); }};
 })();
 </script>
 </body>
